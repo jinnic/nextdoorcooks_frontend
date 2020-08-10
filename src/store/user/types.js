@@ -1,0 +1,5 @@
+export const SET_CURRENTUSER = "SET_CURRENTUSER"
+export const SET_USERS = "SET_USERS"
+export const RESET_CURRENTUSER = "RESET_CURRENTUSER"
+export const UPDATE_USER = "UPDATE_USER"
+export const SET_PROFILE = "SET_PROFILE"

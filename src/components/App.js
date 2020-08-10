@@ -1,87 +1,116 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Switch, Route, withRouter, Redirect } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import SignUp from './SignUp'
 import Login from './Login'
 import NavBar from './NavBar'
 import Profile from './Profile'
+import RecipeForm from './RecipeForm'
+import UserContainer from './UserContainer'
+import RecipeContainer from './RecipeContainer'
+import { getCurrentUser, getRecipes} from '../api/index'
+import {setCurrentUser, setProfile, fetchUsers} from '../store/user/actions'
+import {SET_CURRENTUSER, SET_PROFILE, RESET_CURRENTUSER} from '../store/user/types'
+import {SET_RECIPES} from '../store/recipe/types'
 
-class App extends React.Component {
-  state = {
-    currentUser: null
-  }
+//destructire props and use history for routing
+const App =( {history} )=> {
 
-  // log user in when component mounts
-  componentDidMount() {
-    // check if user is logged in (if there is token)
-    if (localStorage.token) {
-      fetch(`http://localhost:3000/autologin`, 
-        {
-          headers: {
-            "Authorization": `Bearer ${localStorage.token}`
-        }
-      })
-        .then(r => r.json())
-        .then(data => {
-          console.log(data)
-          // check for errors (could also check the status code of the response)
-          if (!data.error) {
-            // and set current user in state
-            this.handleLogin(data)
-          }else{
-            console.log(data.error)
-          }
-        })
+
+  const currentUser = useSelector(state => state.user.currentUser)
+  const users = useSelector(state => state.user.users)
+  const stateData = useSelector(state => {
+    return{
+      currentUser: state.user.currentUser,
+      users: state.user.users,
+      userProfile: state.user.userProfile
     }
-  }
+  })
+  const dispatch  = useDispatch()
+  
+  
+  //fetch initial data : currentUser and users
+  useEffect(() => {
+    getCurrentUser()
+    .then(data => {
+      // check for errors (could also check the status code of the response)
+      if (!data.error) {
+        // and set current user in state
+        // handleLogin(data)
+        const currentUserAction = setCurrentUser(data)
+        const setProfileAction = setProfile(data)
+        dispatch(currentUserAction)
+        dispatch(setProfileAction)
+        history.push('/home')
 
-  updateUser = newUser => {
-    this.setState({ currentUser: newUser })
-  }
-
-  handleLogin = currentUser => {
-    // set current user, then redirect to home page
-    this.setState({ currentUser }, () => {
-      this.props.history.push('/home')
+      }else{
+        console.log(data.error)
+      }
     })
+
+    dispatch(fetchUsers())
+
+    getRecipes()
+      .then(recipes => dispatch({type: SET_RECIPES, payload: recipes }))
+    
+  },[dispatch])
+  
+  // log user in when component mounts
+  const handleLogin = currentUser => {
+    // set current user,
+    // set profile of current user
+    // then redirect to home page
+    dispatch({type: SET_CURRENTUSER, payload: currentUser })
+    dispatch({type: SET_PROFILE, payload:  currentUser})
+
+    history.push('/home')
+
+    // set current user, then redirect to home page
+    // this.setState({ currentUser }, () => {
+    //   history.push('/home')
+    // })
   }
 
-  handleLogout = () => {
+  const handleLogout = () => {
     // remove the userId from localstorage
     // localStorage.clear()
     localStorage.removeItem("token")
-    // and clear the user in state
-    this.setState({
-      currentUser: null
-    })
+    dispatch({type: RESET_CURRENTUSER})
   }
 
-  render() {
-    console.log("In App, state:", this.state)
+
+  
+    console.log("In App, state:", stateData)
     return (
       <>
-        <NavBar currentUser={this.state.currentUser} handleLogout={this.handleLogout} />
+        <NavBar currentUser={currentUser} handleLogout={handleLogout} />
         <main>
           <Switch>
             <Route path="/signup">
-              <SignUp handleLogin={this.handleLogin} />
+              <SignUp handleLogin={handleLogin} />
             </Route>
             <Route path="/login">
-              <Login handleLogin={this.handleLogin} />
+              <Login handleLogin={handleLogin} />
             </Route>
             <Route path="/profile">
-              {this.state.currentUser ? <Profile currentUser={this.state.currentUser} updateUser={this.updateUser} /> : <Redirect to='/' />}
+              {currentUser ? <Profile /> : <Redirect to='/' />}
+            </Route>
+            <Route path="/recipe/new">
+              {currentUser ? <RecipeForm /> : <Redirect to='/' />}
             </Route>
             <Route path="/home">
-              {this.state.currentUser ? <h1>Welcome, {this.state.currentUser.username}</h1> : <Redirect to='/' />}
+              {currentUser ? <h1>Welcome, {currentUser.username}</h1> : <Redirect to='/' />}
+              <UserContainer users={users}/>
+              <RecipeContainer />
             </Route>
             <Route path="/">
               <h1>Please Login or Sign Up</h1>
+              <RecipeContainer />
             </Route>
           </Switch>
         </main>
       </>
     );
-  }
 }
 
 export default withRouter(App);

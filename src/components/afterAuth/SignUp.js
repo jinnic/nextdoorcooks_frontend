@@ -3,7 +3,6 @@ import React from 'react'
 class SignUp extends React.Component {
   state = {
     username: "",
-    location:"",
     avatar: "",
     bio: "",
     password: ""
@@ -36,7 +35,7 @@ class SignUp extends React.Component {
   }
 
   render() {
-    const { username, location, avatar, bio, password } = this.state
+    const { username, avatar, bio, password } = this.state
 
     return (
       <form onSubmit={this.handleSubmit}>
@@ -51,15 +50,6 @@ class SignUp extends React.Component {
           onChange={this.handleChange}
         />
 
-        <label>Location</label>
-        <input
-          type="text"
-          name="username"
-          autoComplete="off"
-          value={location}
-          onChange={this.handleChange}
-        />
-<br/>
         <label>Profile Image</label>
         <input
           type="text"
@@ -69,7 +59,6 @@ class SignUp extends React.Component {
           onChange={this.handleChange}
         />
         <img src={avatar.length ? avatar : "https://cdn.iconscout.com/icon/free/png-512/account-profile-avatar-man-circle-round-user-30452.png"} alt={username} />
-<br/>
 
         <label>Bio</label>
         <textarea

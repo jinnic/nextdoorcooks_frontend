@@ -1,38 +1,30 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import {UPDATE_USER, SET_CURRENTUSER} from '../store/user/types'
+import {updateUser} from '../api'
 
-class Profile extends React.Component {
-  state = {
-    avatar: this.props.currentUser.avatar,
-    bio: this.props.currentUser.bio,
-    location: this.props.currentUser.location
+
+const Profile =()=> {
+  const userProfile = useSelector(state => state.user.userProfile)
+  const {avatar, bio, location} = useSelector(state => state.user.userProfile)
+  const { username } = useSelector(state=>state.user.currentUser)
+  
+  const dispatch = useDispatch()
+  
+  const handleChange = e => {
+    dispatch({type: UPDATE_USER, payload:  { [e.target.name]: e.target.value } })
   }
 
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value })
-  }
-
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault()
     // make a fetch request to edit the current user
-    fetch("http://localhost:3000/profile", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.token}`
-      },
-      body: JSON.stringify(this.state)
-    })
-      .then(r => r.json())
-      .then(console.log)
+    updateUser(userProfile)
+      .then(newUser => dispatch({type: SET_CURRENTUSER, payload: newUser }))
     // then update that user in state in our App component
   }
-
-  render() {
-    const { location, avatar, bio} = this.state
-    const { username } = this.props.currentUser
-
+    
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <h1>{username}'s Profile</h1>
 
         <label>Location</label>
@@ -41,7 +33,7 @@ class Profile extends React.Component {
           name="location"
           autoComplete="off"
           value={location}
-          onChange={this.handleChange}
+          onChange={handleChange}
         />
         <label>Profile Image</label>
         <input
@@ -49,21 +41,20 @@ class Profile extends React.Component {
           name="avatar"
           autoComplete="off"
           value={avatar}
-          onChange={this.handleChange}
+          onChange={handleChange}
         />
-        <img src={avatar.length ? avatar : "https://cdn.iconscout.com/icon/free/png-512/account-profile-avatar-man-circle-round-user-30452.png"} alt={username} />
+        <img src={ avatar === null || avatar.length === 0  ?  "https://cdn.iconscout.com/icon/free/png-512/account-profile-avatar-man-circle-round-user-30452.png" : avatar} alt={username} />
 
         <label>Bio</label>
         <textarea
           name="bio"
           value={bio}
-          onChange={this.handleChange}
+          onChange={handleChange}
         />
 
         <input type="submit" value="Update" />
       </form>
     )
-  }
 }
 
 export default Profile

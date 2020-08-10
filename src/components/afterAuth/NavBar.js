@@ -11,7 +11,6 @@ const NavBar = ({ currentUser, handleLogout }) => {
         {currentUser ? (
           <>
             <Link to="/profile">Profile</Link>
-            <Link to="/recipe/new">Add Recipe</Link>
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
