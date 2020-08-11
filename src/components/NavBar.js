@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom'
 
 const NavBar = ({ currentUser, handleLogout }) => {
   return (
-    <header>
-      <div>
+    <header className={'NavBar'}>
+      <div className={'Logo'}>
         <Link to="/home">Home</Link>
       </div>
-      <div>
+      <div className={'Menu'}>
         {currentUser ? (
           <>
-            <Link to="/profile">Profile</Link>
+            <Link to={`/${currentUser.username}`}>Account</Link>
             <Link to="/recipe/new">Add Recipe</Link>
             <button onClick={handleLogout}>Logout</button>
           </>

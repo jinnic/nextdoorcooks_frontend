@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 
 const RecipeContainer = () => {
   const recipes = useSelector(state => state.recipe.recipes)
-  const renderRecipes = recipes.map( recipe => <RecipeCard key={recipe.id} name={recipe.name}/> ) 
+  const renderRecipes = recipes.map( recipe => <RecipeCard key={`recipecard_${recipe.name}`} recipe={recipe}/> ) 
   
   return (
     <>

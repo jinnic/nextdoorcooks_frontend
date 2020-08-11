@@ -1,38 +1,27 @@
 import React, {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import {ADD_RECIPE} from '../store/recipe/types'
-import {addRecipe} from '../api'
+import {UPDATE_RECIPE} from '../store/recipe/types'
+import {updateRecipe} from '../api'
 
 
-const RecipeForm =()=> {
+const RecipeEditForm =({recipe})=> {
+  const {id, name, duration, description, ingredients, instructions, user, ratings, likes} = recipe
   const currentUser = useSelector(state=>state.user.currentUser)
   const dispatch = useDispatch()
   const [infoState, setInfoState] = useState({
-    name: "",
-    duration: 0,
-    description: "",
+    id: id,
+    name: name,
+    duration: duration,
+    description: description,
    })
 
   const [ingredState, setIngredients] = useState({
-    ingredients: [
-      {
-        name: "", 
-        amount: 0,
-        measurement:"n/a"
-      }
-    ]
+    ingredients: [...ingredients]
   })
 
   const [instructState, setInstructions] = useState({
-    instructions: [
-      {
-        step:0,
-        instruction: "",
-        ingredients: {...ingredState.ingredients[0]}
-        //  [{...ingredState.ingredients[0]}]
-      }
-    ]
+    instructions: [...instructions]
   })
 
   const addInstructions =()=>{
@@ -206,7 +195,7 @@ const RecipeForm =()=> {
     ingredients.splice(i, 1);
     setIngredients({ ingredients });
   }
-  const {name, duration, description} = infoState
+  // const {name, duration, description} = infoState
   
   
   const handleChange = (e, i)=> {
@@ -252,16 +241,18 @@ const RecipeForm =()=> {
     e.preventDefault()
     // make a fetch request to edit the current user
     
-    const recipe = {
+    const updatedRecipe = {
       ...infoState,
       ...ingredState,
       ...instructState,
       user_id: currentUser.id
     }
-    console.log(recipe)
+    console.log('original recipe :', recipe)
+    console.log('updated recipe : ', updatedRecipe)
     // debugger
-    addRecipe(recipe)
-      .then(recipe => dispatch({type: ADD_RECIPE, payload: recipe}))
+    updateRecipe(updatedRecipe)
+      .then(recipe => dispatch({type: UPDATE_RECIPE, payload: recipe}))
+      //recipe => dispatch({type: UPDATE_RECIPE, payload: recipe})
     // then update that user in state in our App component
   }
   
@@ -305,9 +296,9 @@ const RecipeForm =()=> {
         <input type="button" value="add instructions" onClick={addInstructions} />
 
   <br/>
-        <input type="submit" value="Add" />
+        <input type="submit" value="Update" />
       </form>
     )
 }
 
-export default RecipeForm
+export default RecipeEditForm

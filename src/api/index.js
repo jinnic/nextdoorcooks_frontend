@@ -72,3 +72,15 @@ export const addRecipe = (recipe)=>{
           })
             .then(r => r.json())
 }
+
+export const updateRecipe = (recipe) =>{
+  debugger
+  return fetch(`http://localhost:3000/recipes/${recipe.id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(recipe)
+          })
+            .then(r => r.json())
+}

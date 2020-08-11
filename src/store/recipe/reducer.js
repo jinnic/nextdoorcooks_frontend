@@ -1,4 +1,4 @@
-import {SET_RECIPES, ADD_RECIPE} from './types'
+import {SET_RECIPES, ADD_RECIPE, UPDATE_RECIPE} from './types'
 
 const defaultState = {
   recipes: []
@@ -14,6 +14,14 @@ const reducer = (state = defaultState , action) =>{
       }
     case ADD_RECIPE:
       return {
+        ...state,
+        recipes: [
+          ...state.recipes,
+          action.payload
+        ]
+      }
+    case UPDATE_RECIPE:
+      return{
         ...state,
         recipes: [
           ...state.recipes,

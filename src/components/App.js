@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import SignUp from './SignUp'
 import Login from './Login'
 import NavBar from './NavBar'
-import Profile from './Profile'
+import Account from './Account'
+import Recipe from './Recipe'
 import RecipeForm from './RecipeForm'
 import UserContainer from './UserContainer'
 import RecipeContainer from './RecipeContainer'
@@ -79,12 +80,13 @@ const App =( {history} )=> {
   }
 
 
-  
+  let account = currentUser ? `/${currentUser.username}` : '/'
     console.log("In App, state:", stateData)
     return (
       <>
         <NavBar currentUser={currentUser} handleLogout={handleLogout} />
         <main>
+        <div className={'Container'}>
           <Switch>
             <Route path="/signup">
               <SignUp handleLogin={handleLogin} />
@@ -92,22 +94,34 @@ const App =( {history} )=> {
             <Route path="/login">
               <Login handleLogin={handleLogin} />
             </Route>
-            <Route path="/profile">
-              {currentUser ? <Profile /> : <Redirect to='/' />}
+            <Route path={account}>
+            {/* <Route path="/profile"> */}
+              {currentUser ? <Account /> : <Redirect to='/' />}
             </Route>
             <Route path="/recipe/new">
               {currentUser ? <RecipeForm /> : <Redirect to='/' />}
             </Route>
+            <Route path={`/recipe/:slug`}>
+              {currentUser ? <Recipe /> : <Redirect to='/' />}
+            </Route>
             <Route path="/home">
-              {currentUser ? <h1>Welcome, {currentUser.username}</h1> : <Redirect to='/' />}
-              <UserContainer users={users}/>
-              <RecipeContainer />
+              {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
+              {/* <UserContainer users={users}/> */}
+              <div className={'Row'}>
+                <div className={"RecipeContainer"}>
+                  <h2>Recipes</h2>
+                  <div className={"Recipes"}>
+                    <RecipeContainer />
+                  </div>
+                </div>
+              </div>
             </Route>
             <Route path="/">
               <h1>Please Login or Sign Up</h1>
               <RecipeContainer />
             </Route>
           </Switch>
+        </div>
         </main>
       </>
     );
