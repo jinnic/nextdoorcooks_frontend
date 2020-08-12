@@ -113,7 +113,7 @@ const App =( {history} )=> {
             <Route path={`/recipe/:slug`}>
               {currentUser ? <Recipe /> : <Redirect to='/' />}
             </Route>
-            <Route path="/home">
+            <Route path="/home" exact>
               {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
               <h2>Recipes</h2>  
                   <RecipeContainer />
