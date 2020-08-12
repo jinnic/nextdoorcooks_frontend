@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import {ADD_RECIPE} from '../store/recipe/types'
-import {addRecipe} from '../api'
+import {ADD_RECIPE} from '../../store/recipe/types'
+import {addRecipe} from '../../api'
 
 
 const RecipeForm =()=> {

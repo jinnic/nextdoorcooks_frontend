@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+div, form, .NavBar{
+  border: aqua 1px solid;
+}
+
 img{
   width: 300px;
 }
@@ -49,10 +53,17 @@ main{
   display: flex;
   flex-direction: row;
   width: 100%;
+  justify-content: space-between;
 }
-.Account, .RecipeContainer{
+.Account{
   display: flex;
   flex-direction: column;
+  width: 60%;
+}
+
+.RecipeContainer{
+  display: flex;
+  flex-direction: revert;
   width: 60%;
 }
 .UserInfo{
@@ -101,6 +112,23 @@ form{
   width: 100%
 }
 
-div, form, .NavBar{
-  border: aqua 1px solid;
+
+/* LIKES */
+.LikeBtn{
+  z-index: 100;
+}
+
+/* RATINGs */
+input[type="radio"]{
+  display: none;
+}
+.starContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.star{
+  cursor: pointer;
+  transition: color 200ms;
 }

@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import {UPDATE_RECIPE} from '../store/recipe/types'
-import {updateRecipe} from '../api'
+import {UPDATE_RECIPE} from '../../store/recipe/types'
+import {updateRecipe} from '../../api'
 
 
-const RecipeEditForm =({recipe})=> {
+const RecipeEditForm =({recipe, setEditRecipe})=> {
   const {id, name, duration, description, ingredients, instructions, user, ratings, likes} = recipe
   const currentUser = useSelector(state=>state.user.currentUser)
   const dispatch = useDispatch()
@@ -254,9 +254,9 @@ const RecipeEditForm =({recipe})=> {
       .then(recipe => dispatch({type: UPDATE_RECIPE, payload: recipe}))
       //recipe => dispatch({type: UPDATE_RECIPE, payload: recipe})
     // then update that user in state in our App component
+    setEditRecipe(false)
   }
   
-  console.log("ingredState", instructState);
     return (
       <form onSubmit={handleSubmit}>
         <h1>ADD NEW RECIPE</h1>

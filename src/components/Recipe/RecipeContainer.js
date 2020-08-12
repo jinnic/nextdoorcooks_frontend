@@ -7,9 +7,9 @@ const RecipeContainer = () => {
   const renderRecipes = recipes.map( recipe => <RecipeCard key={`recipecard_${recipe.name}`} recipe={recipe}/> ) 
   
   return (
-    <>
+    <div className="RecipeContainer">
      {renderRecipes}
-    </>
+    </div>
   )
 }
 

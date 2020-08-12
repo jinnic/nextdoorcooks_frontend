@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import ProfileForm from './ProfileForm'
 import ProfileInfo from './ProfileInfo'
-import RecipeCard from './RecipeCard'
+import RecipeCard from './Recipe/RecipeCard'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {UPDATE_USER, SET_CURRENTUSER} from '../store/user/types'
@@ -41,12 +41,9 @@ const Account =()=> {
             <h3>Interested In</h3>
             <p>tag1, tag2 tag3</p>
           </div>
-
-          <div className={"RecipeContainer"}>
-            <h2>Recipes</h2>
-            <div className={"Recipes"}>
+          <h2>Recipes</h2>
+          <div className={"RecipeContainer"}>                      
               {renderRecipeCards()}
-            </div>
           </div>
 
           <div className={"ExperianceContainer"}>

@@ -74,13 +74,70 @@ export const addRecipe = (recipe)=>{
 }
 
 export const updateRecipe = (recipe) =>{
-  debugger
   return fetch(`http://localhost:3000/recipes/${recipe.id}`, {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(recipe)
+          })
+            .then(r => r.json())
+}
+
+
+export const deleteRecipe = (recipe) =>{
+  return fetch(`http://localhost:3000/recipes/${recipe.id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            }
+          })
+            .then(r => r.json())
+}
+
+export const addLike = (like) =>{
+  //console.log("like objct : ",like)
+  
+  return fetch("http://localhost:3000/likes", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(like)
+          })
+            .then(r => r.json())
+}
+
+export const removeLike = (like_id) =>{
+  
+  return fetch(`http://localhost:3000/likes/${like_id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            }
+          })
+            .then(r => r.json())
+}
+
+export const addRating = (rating)=>{
+  return fetch("http://localhost:3000/ratings", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(rating)
+          })
+            .then(r => r.json())
+}
+
+export const updateRating = (rating)=>{
+  
+  return fetch(`http://localhost:3000/ratings/${rating.id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(rating)
           })
             .then(r => r.json())
 }
