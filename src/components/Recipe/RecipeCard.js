@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { addLike, removeLike } from '../../api'
 import { averageRatings } from '../Rating/index'
@@ -11,6 +11,7 @@ const RecipeCard = ({recipe}) => {
   const dispatch = useDispatch()
   const {name, duration, description, ingredients, instructions, user, ratings, likes} = recipe
   const currentUser = useSelector(state=>state.user.currentUser)
+  const users = useSelector(state=>state.user.users)
   let like = []
   if(currentUser === null ){
     like = []
@@ -19,7 +20,7 @@ const RecipeCard = ({recipe}) => {
   }
   
  
-  console.log("recipe card : ",name)
+  //console.log("recipe card : ",name)
   // debugger
   const haveLikes =()=>{
     //console.log("USER LIKE THIS RECIPE???", like)
@@ -47,7 +48,7 @@ const RecipeCard = ({recipe}) => {
   }
   
   const handleClick =(e)=>{
-    //debugger
+     //debugger
     if(e.currentTarget.tagName === 'BUTTON'){
       e.stopPropagation()
       //update like in recipe
@@ -68,9 +69,17 @@ const RecipeCard = ({recipe}) => {
 
       
       //console.log("recipe clicked!!!", props.recipe.id)
+    }else if (e.target.tagName === 'A') {
+      
+      let linkedUser = users.find(user => user.username === e.target.name)
+      // debugger
+      // history.push({
+      //   pathname: `/${e.target.name}`,
+      // })
     }else{
+      let recipeName = recipe.name.replace(/\s/g,'_').toLowerCase()
       history.push({
-        pathname: `/recipe/${recipe.name.replace(/\s/g,'')}`,
+        pathname: `/recipe/${recipe.id}/${recipeName}`,
         state: {id: recipe.id}
       })
     }
@@ -81,6 +90,7 @@ const RecipeCard = ({recipe}) => {
   const renderLikeBtn =()=>{
     return haveLikes() ? <button className={'LikeBtn'} onClick={handleClick}>♥︎</button> : <button className={'LikeBtn'} onClick={handleClick}>♡</button>
   }
+  // if (user) return <h1>USER IS HERE</h1>
 
   //debugger
   return (
@@ -97,7 +107,8 @@ const RecipeCard = ({recipe}) => {
      <ul>
      {renderInstructions()}
      </ul>
-     <h6>{`created by ${user.username}`}</h6>
+     {/* <h6>{`created by ${user.username}`}</h6> */}
+     <Link name={`${user.username}`} to={`/${user.username}`}>{`created by ${user.username}`}</Link>
      <span>{likes.length} likes</span>
      {
         currentUser ? renderLikeBtn() : ''

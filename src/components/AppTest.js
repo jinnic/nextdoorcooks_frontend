@@ -7,34 +7,41 @@ import NavBar from './NavBar'
 import Account from './Account'
 import Recipe from './Recipe/Recipe'
 import RecipeForm from './Recipe/RecipeForm'
-import UserContainer from './UserContainer'
 import RecipeContainer from './Recipe/RecipeContainer'
-import { getCurrentUser, getRecipes, getCurrentUserFollowees} from '../api/index'
+import { getCurrentUser, getRecipes} from '../api/index'
 import {setCurrentUser, setProfile, fetchUsers} from '../store/user/actions'
-import {SET_CURRENTUSER, SET_PROFILE, RESET_CURRENTUSER, SET_CURRENTUSER_FOLLOWEES} from '../store/user/types'
+import {SET_CURRENTUSER, SET_PROFILE, RESET_CURRENTUSER} from '../store/user/types'
 import {SET_RECIPES} from '../store/recipe/types'
+import { fetchRecipes } from '../store/recipe/actions'
 
 //destructire props and use history for routing
 const App =( {history} )=> {
 
 
   const currentUser = useSelector(state => state.user.currentUser)
-  const isLoading = useSelector(state => state.user.isLoading)
-  const followees = useSelector(state => state.user.followees)
-  const users = useSelector(state => state.user.users)
-  const stateData = useSelector(state => {
-    return{
-      currentUser: state.user.currentUser,
-      users: state.user.users,
-      userProfile: state.user.userProfile
-    }
-  })
+  // const users = useSelector(state => state.user.users)
+  // const stateData = useSelector(state => {
+  //   return{
+  //     currentUser: state.user.currentUser,
+  //     users: state.user.users,
+  //     userProfile: state.user.userProfile,
+  //     recipes: state.recipes
+  //   }
+  // })
   const dispatch  = useDispatch()
-  
-  useEffect(()=>{
+
+  //fetch initial data : currentUser and users and recipes
+  useEffect(() => {
+    
+    // dispatch(fetchRecipes())
     getRecipes()
-      .then(recipes => dispatch({type: SET_RECIPES, payload: recipes }))
+    .then(recipes => {
+      console.log("DONE Fetched RECIPES")
+      dispatch({type: SET_RECIPES, payload: recipes })
+    })
+    
     dispatch(fetchUsers())
+
     getCurrentUser()
     .then(data => {
       // check for errors (could also check the status code of the response)
@@ -45,34 +52,14 @@ const App =( {history} )=> {
         const setProfileAction = setProfile(data)
         dispatch(currentUserAction)
         dispatch(setProfileAction)
-        // debugger
-        const path = history.location.pathname
-        getCurrentUserFollowees(data.id)
-          .then(data => {
-            if (!data.error) {
-              dispatch({type: SET_CURRENTUSER_FOLLOWEES, payload: data })
-            }else{
-              console.log("FOLLOWEE ", data.error)
-            }
-          })
-        // debugger
-        // 
-        path === "/" ? history.push('/home') :  history.push(path)
-        
-
-        // history.push('/home')
-
+        console.log("DONE Fetched CURRENT USER")
+        history.push('/home')
       }else{
         console.log(data.error)
       }
     })
-    
-  }, [])
 
-  //fetch initial data : currentUser and users
-  // useEffect(() => {
-   
-  // },[dispatch])
+  },[])
   
   // log user in when component mounts
   const handleLogin = currentUser => {
@@ -81,6 +68,7 @@ const App =( {history} )=> {
     // then redirect to home page
     dispatch({type: SET_CURRENTUSER, payload: currentUser })
     dispatch({type: SET_PROFILE, payload:  currentUser})
+
     history.push('/home')
 
     // set current user, then redirect to home page
@@ -96,9 +84,10 @@ const App =( {history} )=> {
     dispatch({type: RESET_CURRENTUSER})
   }
 
-  if (isLoading) return <h1>IS LOADING</h1>
 
-    console.log("In App, state:", stateData)
+  // let account = currentUser ? `/${currentUser.username}` : ''
+
+  console.log("In App")
     return (
       <>
         <NavBar currentUser={currentUser} handleLogout={handleLogout} />
@@ -109,32 +98,36 @@ const App =( {history} )=> {
               <Account />
             </Route> */}
             
+            <Route path="/home" exact>
+              {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
+              <h2>Recipes</h2>  
+                  <RecipeContainer />
+            </Route>
             <Route path="/signup">
               <SignUp handleLogin={handleLogin} />
             </Route>
             <Route path="/login">
               <Login handleLogin={handleLogin} />
             </Route>
+            <Route path={`/profile`} exact>
+            {/* <Route path="/profile"> */}
+              {currentUser ? <Account /> : <Redirect to='/' />}
+            </Route>
+            <Route path={`/:slug`}>
+              {/* {console.log("slug path")} */}
+              {currentUser ? <Account /> : <Redirect to='/' />}
+            </Route>
             <Route path="/recipe/new">
+            {/* {console.log("recipe new")} */}
               {currentUser ? <RecipeForm /> : <Redirect to='/' />}
             </Route>
-            <Route path={`/recipe/:id/:slug`}>
+            <Route path={`/recipe/:slug`}>
               {currentUser ? <Recipe /> : <Redirect to='/' />}
             </Route>
-            <Route exact path="/home" >
-              {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
-              <h2>Recipes</h2>  
-                  <RecipeContainer />
-            </Route>
-            <Route path='/:slug'> 
-              {/* <h1>SLIUUUUUUUUUGGGGGG PAGE</h1> */}
-              <Account /> 
-            </Route>
-            <Route exact path="/" >
+            <Route path="/" >
               <h1>Please Login or Sign Up</h1>
               <RecipeContainer />
             </Route>
-            
           </Switch>
         </div>
         </main>

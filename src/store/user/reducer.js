@@ -1,7 +1,9 @@
-import {SET_USERS, SET_CURRENTUSER, SET_PROFILE, RESET_CURRENTUSER, UPDATE_USER} from './types'
+import {SET_USERS, SET_CURRENTUSER, SET_CURRENTUSER_FOLLOWEES, ADD_CURRENTUSER_FOLLOWEES, REMOVE_CURRENTUSER_FOLLOWEES, SET_PROFILE, RESET_CURRENTUSER, UPDATE_USER} from './types'
 
 const defaultState = {
   currentUser: null,
+  followees: [],
+  isLoading: true,
   users: [],
   userProfile: {
       avatar: "",
@@ -17,11 +19,19 @@ const reducer = (state = defaultState , action) =>{
       return {
         ...state,
         currentUser: action.payload
+        
       }
+    case SET_CURRENTUSER_FOLLOWEES:
+    return {
+      ...state,
+      followees: action.payload
+      
+    }
     case SET_USERS:
       return {
         ...state,
-        users: action.payload
+        users: action.payload,
+        isLoading: false
       }
     case SET_PROFILE:
       return {
@@ -42,6 +52,19 @@ const reducer = (state = defaultState , action) =>{
           ...action.payload
         }
       }
+    case ADD_CURRENTUSER_FOLLOWEES:
+      return{
+        ...state,
+        followees: [
+          ...state.followees,
+          action.payload
+        ]
+      }
+    case REMOVE_CURRENTUSER_FOLLOWEES:
+    return{
+      ...state,
+      followees: state.followees.filter(f => f.id !== action.payload.id)
+    }
     case RESET_CURRENTUSER:
       return{
         ...state,

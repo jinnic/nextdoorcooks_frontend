@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 import {ADD_RECIPE} from '../../store/recipe/types'
 import {addRecipe} from '../../api'
@@ -13,7 +14,8 @@ const RecipeForm =()=> {
     duration: 0,
     description: "",
    })
-
+  const {name, duration, description} = infoState
+  
   const [ingredState, setIngredients] = useState({
     ingredients: [
       {
@@ -206,7 +208,6 @@ const RecipeForm =()=> {
     ingredients.splice(i, 1);
     setIngredients({ ingredients });
   }
-  const {name, duration, description} = infoState
   
   
   const handleChange = (e, i)=> {
@@ -251,7 +252,6 @@ const RecipeForm =()=> {
   const handleSubmit = e => {
     e.preventDefault()
     // make a fetch request to edit the current user
-    
     const recipe = {
       ...infoState,
       ...ingredState,
@@ -262,6 +262,7 @@ const RecipeForm =()=> {
     // debugger
     addRecipe(recipe)
       .then(recipe => dispatch({type: ADD_RECIPE, payload: recipe}))
+    return <Redirect to='/home' />
     // then update that user in state in our App component
   }
   

@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const NavBar = ({ currentUser, handleLogout }) => {
+  // ${currentUser.username}
   return (
     <header className={'NavBar'}>
       <div className={'Logo'}>
@@ -10,7 +11,7 @@ const NavBar = ({ currentUser, handleLogout }) => {
       <div className={'Menu'}>
         {currentUser ? (
           <>
-            <Link to={`/${currentUser.username}`}>Account</Link>
+            <Link to={`${currentUser.username}`}>Account</Link>
             <Link to="/recipe/new">Add Recipe</Link>
             <button onClick={handleLogout}>Logout</button>
           </>

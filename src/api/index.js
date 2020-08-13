@@ -3,6 +3,7 @@
 //     .then(r => r.json())
 // }
 export const getCurrentUser = () => {
+  console.log("Fetch Current user : AUTO LOGIN")
   return fetch(`http://localhost:3000/autologin`, 
         {
           headers: {
@@ -20,9 +21,18 @@ export const getCurrentUser = () => {
   //           .then(r => r.json())
   // }
   // return {error: "Invalid Request"}
+  
+
+}
+
+export const getCurrentUserFollowees = (id)=>{
+  console.log("Fetch Current FOLLOWEES")
+  return fetch(`http://localhost:3000/users/${id}/following`)
+        .then(r => r.json())
 }
 
 export const getUsers = () => {
+  console.log("Fetch Users")
   return fetch(`http://localhost:3000/users`, 
             {
               headers: {
@@ -58,6 +68,7 @@ export const updateUser = (userProfile) =>{
 // }
 
 export const getRecipes = () =>{
+  console.log("Fetch RECIPES")
   return fetch(`http://localhost:3000/recipes`)
             .then(r => r.json())
 }
@@ -141,3 +152,28 @@ export const updateRating = (rating)=>{
           })
             .then(r => r.json())
 }
+
+export const follow = (id)=>{
+  return fetch(`http://localhost:3000/follow/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.token}`
+      }
+    })
+      .then(r => r.json())
+}
+
+
+
+export const unfollow = (id)=>{
+  return fetch(`http://localhost:3000/unfollow/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.token}`
+      }
+    })
+      .then(r => r.json())
+}
+

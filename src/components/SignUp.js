@@ -54,7 +54,7 @@ class SignUp extends React.Component {
         <label>Location</label>
         <input
           type="text"
-          name="username"
+          name="location"
           autoComplete="off"
           value={location}
           onChange={this.handleChange}

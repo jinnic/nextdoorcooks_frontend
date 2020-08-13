@@ -63,6 +63,7 @@ const Recipe = () => {
     }else if(e.target.name === 'delete'){
       deleteRecipe(recipe)
       .then( r => dispatch({type: DELETE_RECIPE, payload: r}))
+      history.goBack()
     }else if(e.target.name === 'like'){
       const likeObj = {
         user_id: currentUser.id,
