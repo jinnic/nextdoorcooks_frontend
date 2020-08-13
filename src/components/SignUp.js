@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import {ADD_TO_USERS} from '../store/user/types'
 
 class SignUp extends React.Component {
   state = {
@@ -27,14 +29,16 @@ class SignUp extends React.Component {
       // then set that user in state in our App component
       .then(data => {
         const { user, token } = data
-
+        this.props.dispatch({ type: ADD_TO_USERS, payload: user })
         this.props.handleLogin(user)
         // also save the token to localStorage
         // localStorage.userId = data.id
         localStorage.token = token
+        
       })
   }
 
+  
   render() {
     const { username, location, avatar, bio, password } = this.state
 
@@ -92,5 +96,13 @@ class SignUp extends React.Component {
     )
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  // debugger
+  return {
+    addUsers: user => dispatch({ type: ADD_TO_USERS, payload: user })
+  }
+}
+
 
 export default SignUp

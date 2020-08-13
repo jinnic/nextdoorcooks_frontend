@@ -67,6 +67,16 @@ export const updateUser = (userProfile) =>{
 //     }))
 // }
 
+export const deleteUser=(user)=>{
+  return fetch(`http://localhost:3000/users/${user.id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.token}`
+            }
+          })
+            .then(r => r.json())
+}
 export const getRecipes = () =>{
   console.log("Fetch RECIPES")
   return fetch(`http://localhost:3000/recipes`)
@@ -163,7 +173,6 @@ export const follow = (id)=>{
     })
       .then(r => r.json())
 }
-
 
 
 export const unfollow = (id)=>{

@@ -1,4 +1,4 @@
-import {SET_USERS, SET_CURRENTUSER, SET_CURRENTUSER_FOLLOWEES, ADD_CURRENTUSER_FOLLOWEES, REMOVE_CURRENTUSER_FOLLOWEES, SET_PROFILE, RESET_CURRENTUSER, UPDATE_USER} from './types'
+import {SET_USERS, SET_CURRENTUSER, SET_CURRENTUSER_FOLLOWEES, ADD_CURRENTUSER_FOLLOWEES, REMOVE_CURRENTUSER_FOLLOWEES, SET_PROFILE, RESET_CURRENTUSER, UPDATE_USER, DELETE_USER, ADD_TO_USERS} from './types'
 
 const defaultState = {
   currentUser: null,
@@ -33,6 +33,14 @@ const reducer = (state = defaultState , action) =>{
         users: action.payload,
         isLoading: false
       }
+    case ADD_TO_USERS:
+    return{
+      ...state,
+      users: [
+          ...state.users,
+          action.payload
+        ]
+    }
     case SET_PROFILE:
       return {
         ...state,
@@ -52,6 +60,13 @@ const reducer = (state = defaultState , action) =>{
           ...action.payload
         }
       }
+    case DELETE_USER:
+    // debugger
+    return {
+      ...state,
+        currentUser: null,
+        users: state.users.filter(u => u.id !== action.payload.id)
+    }
     case ADD_CURRENTUSER_FOLLOWEES:
       return{
         ...state,

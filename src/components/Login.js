@@ -22,12 +22,18 @@ class Login extends React.Component {
     })
       .then(r => r.json())
       .then(data => {
-        console.log(data)
-        const { user, token } = data
-        // then set that user in state in our App component
-        this.props.handleLogin(user)
-        // also save the token to localStorage
-        localStorage.token = token
+
+        if (!data.error) {
+          console.log(data)
+          const { user, token } = data
+          // then set that user in state in our App component
+          this.props.handleLogin(user)
+          // also save the token to localStorage
+          localStorage.token = token
+        }else{
+          console.log(data)
+        }
+
       })
   }
 

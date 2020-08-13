@@ -2,21 +2,23 @@ import React, {useState} from 'react'
 import ProfileForm from './ProfileForm'
 import ProfileInfo from './ProfileInfo'
 import RecipeCard from './Recipe/RecipeCard'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useHistory, Redirect } from 'react-router-dom'
-
-import {UPDATE_USER, SET_CURRENTUSER} from '../store/user/types'
-import {updateUser} from '../api'
+import {RESET_CURRENTUSER, DELETE_USER} from '../store/user/types'
+import {DELETE_RECIPES_OF_USER} from '../store/recipe/types'
+import {deleteUser} from '../api'
 
 
 const Account =()=> {
   const location = useLocation()
   const history = useHistory()
+  const dispatch = useDispatch()
   const userPath = location.pathname.split('/')[1]
   const [editUserInfo,setEditUserInfo] = useState(false)
   const isLoading = useSelector(state => state.user.isLoading)
   const recipes = useSelector(state => state.recipe.recipes)
   const users = useSelector(state => state.user.users)
+  const currentUser = useSelector(state => state.user.currentUser)
   let recipeOwner = {}
 
   if(users){
@@ -31,6 +33,35 @@ const Account =()=> {
     console.log(editUserInfo)
   } 
   
+  const handleLogout = () => {
+    // remove the userId from localstorage
+    // localStorage.clear()
+    localStorage.removeItem("token")
+    dispatch({type: RESET_CURRENTUSER})
+  }
+  
+
+  const handleDelete=(e)=>{
+    console.log("clicked delete")
+    // setEditUserInfo(false)
+    window.confirm('Are you sure you wish to delete your account?') ? onConfirm("confirm") : onCancel("cancel")
+
+  } 
+  const onConfirm=(a)=>{
+    console.log(a)
+    deleteUser(currentUser)
+      .then( r => {
+        dispatch({type: DELETE_USER, payload: r})
+        dispatch({type: DELETE_RECIPES_OF_USER, payload: r})
+      })
+    //log out
+    handleLogout()
+    history.push('/')
+  }
+
+  const onCancel=(a)=>{
+    console.log(a)
+  }
   const renderRecipeCards=()=>{
     const filteredRecipes = recipes.filter(r => r.user.id === recipeOwner.id)
     return filteredRecipes.map( recipe => <RecipeCard className={"RecipeCard"} key={recipe.id} recipe={recipe}/> ) 
@@ -47,7 +78,7 @@ const Account =()=> {
         
        <>
           <div className={'Row'}>
-          {editUserInfo ? <ProfileForm handleEdit={handleEdit}/> : <ProfileInfo handleEdit={handleEdit} recipeOwner={recipeOwner}/>  }
+          {editUserInfo ? <ProfileForm handleEdit={handleEdit}/> : <ProfileInfo handleEdit={handleEdit} recipeOwner={recipeOwner} handleDelete={handleDelete}/>  }
           <div className={"Account"}>
             
             <div className={"AccountInfo"}>

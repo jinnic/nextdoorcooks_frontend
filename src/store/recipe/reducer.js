@@ -1,4 +1,4 @@
-import {SET_RECIPES, ADD_RECIPE, UPDATE_RECIPE, DELETE_RECIPE} from './types'
+import {SET_RECIPES, ADD_RECIPE, UPDATE_RECIPE, DELETE_RECIPE, DELETE_RECIPES_OF_USER} from './types'
 
 const defaultState = {
   recipes: []
@@ -35,6 +35,12 @@ const reducer = (state = defaultState , action) =>{
         ...state,
         recipes: state.recipes.filter(r => r.id !== action.payload.id)
       }
+    case DELETE_RECIPES_OF_USER:
+    debugger
+    return{
+      ...state,
+      recipes: state.recipes.filter(r => r.user.id !== action.payload.id)
+    }
     default:
       return state
   }

@@ -5,13 +5,15 @@ import {ADD_CURRENTUSER_FOLLOWEES, REMOVE_CURRENTUSER_FOLLOWEES} from '../store/
 
 
 
-const ProfileInfo =({handleEdit, recipeOwner})=> {
+const ProfileInfo =({handleEdit, handleDelete, recipeOwner})=> {
   const dispatch = useDispatch()
   const currentUser = useSelector(state => state.user.currentUser)
   const followees = useSelector(state => state.user.followees)
   const {id, username, avatar, bio, location}= recipeOwner
-  const handleClick =()=>{
-    handleEdit(true)
+  
+  const handleClick =(e)=>{
+   e.target.name === 'delete' ? handleDelete(e) : handleEdit(true)
+
   }
 
   let followed = followees.find(f => f.id === id)
@@ -23,7 +25,11 @@ const ProfileInfo =({handleEdit, recipeOwner})=> {
   }
   const renderButtons=()=>{
     return currentUser.id === id ? 
-    <button onClick={handleClick}>edit profile</button> :
+    <>
+      <button onClick={handleClick}>edit profile</button>
+      <button name ='delete' onClick={handleClick}>DELETE ACCOUNT</button>
+    </>
+    :
     renderFollowBtn()
   }
 

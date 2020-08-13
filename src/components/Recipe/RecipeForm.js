@@ -1,14 +1,16 @@
 import React, {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import {ADD_RECIPE} from '../../store/recipe/types'
 import {addRecipe} from '../../api'
 
 
-const RecipeForm =()=> {
+const RecipeForm =(props)=> {
   const currentUser = useSelector(state=>state.user.currentUser)
   const dispatch = useDispatch()
+  const history = useHistory()
+
   const [infoState, setInfoState] = useState({
     name: "",
     duration: 0,
@@ -25,6 +27,7 @@ const RecipeForm =()=> {
       }
     ]
   })
+  const measurements = ['n/a', 'teaspoon', 'tablespoon', 'oz', 'cup', 'lb']
 
   const [instructState, setInstructions] = useState({
     instructions: [
@@ -130,9 +133,6 @@ const RecipeForm =()=> {
       )
     })
   }
-
-  const measurements = ['n/a', 'teaspoon', 'tablespoon', 'oz', 'cup', 'lb']
-  
 
 
   const renderIngredient = () =>{
@@ -248,7 +248,6 @@ const RecipeForm =()=> {
   //   values.splice(i, 1);
   //   setFields(values);
   // }
-  
   const handleSubmit = e => {
     e.preventDefault()
     // make a fetch request to edit the current user
@@ -262,12 +261,19 @@ const RecipeForm =()=> {
     // debugger
     addRecipe(recipe)
       .then(recipe => dispatch({type: ADD_RECIPE, payload: recipe}))
-    return <Redirect to='/home' />
+    console.log("want to redirect : ", props)
+    
+    history.push('/home')
+    // return <Redirect to={"/home"} />
     // then update that user in state in our App component
   }
+
+
+
   
   console.log("ingredState", instructState);
     return (
+      
       <form onSubmit={handleSubmit}>
         <h1>ADD NEW RECIPE</h1>
 
@@ -304,7 +310,15 @@ const RecipeForm =()=> {
         <label>Instructions</label>
         {renderInstruction()}
         <input type="button" value="add instructions" onClick={addInstructions} />
-
+  <br/>
+        {/* <label htmlFor="caption">
+        Caption
+        <input type="text" name="caption" />
+        </label>
+        <label htmlFor="image" >
+        Upload image
+        <input type="file" name="image" accept="image/*" />
+        </label> */}
   <br/>
         <input type="submit" value="Add" />
       </form>

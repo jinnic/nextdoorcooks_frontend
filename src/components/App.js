@@ -110,7 +110,7 @@ const App =( {history} )=> {
             </Route> */}
             
             <Route path="/signup">
-              <SignUp handleLogin={handleLogin} />
+              <SignUp handleLogin={handleLogin} dispatch={dispatch} />
             </Route>
             <Route path="/login">
               <Login handleLogin={handleLogin} />
