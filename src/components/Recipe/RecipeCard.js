@@ -12,10 +12,13 @@ const RecipeCard = ({recipe}) => {
   const {name, duration, description, ingredients, instructions, user, ratings, likes} = recipe
   const currentUser = useSelector(state=>state.user.currentUser)
   const users = useSelector(state=>state.user.users)
+  
   let like = []
-  if(currentUser === null ){
+  if(currentUser === null || likes === undefined){
     like = []
   }else{
+    console.log("RECIPE CARD LIKES : ",likes, recipe.id)
+    console.log("RECIPE CARD RECIPE : ",recipe)
     like = likes.filter(l => l.user_id === currentUser.id)
   }
   
@@ -37,12 +40,12 @@ const RecipeCard = ({recipe}) => {
 
   const renderIngredients =()=>{
     if(ingredients !== undefined){
-      return ingredients.map( i => {
+      return ingredients.map( (i,x) => {
         let mesurement = ""
         if (i.measurement !== 'n/a' ){
           mesurement = i.measurement
         }
-        return <li key={i.name}>{`${i.amount} ${mesurement} of ${i.name}`}</li>
+        return <li key={`${i.name}_${x}`}>{`${i.amount} ${mesurement} of ${i.name}`}</li>
       })
     }
   }
@@ -96,7 +99,7 @@ const RecipeCard = ({recipe}) => {
   return (
     <div className={"RecipeCard"} onClick={handleClick}>
      <h4>{name.charAt(0).toUpperCase() + name.slice(1)}</h4>
-     <h5>Ratings : { averageRatings(ratings)} ⭐</h5>
+     <h5>Ratings : { ratings === undefined ? 0 : averageRatings(ratings)} ⭐</h5>
      <h5>duration : {duration} min</h5>
      <p>{description}</p>
      <h5>ingredients</h5>

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import {ADD_RECIPE} from '../../store/recipe/types'
+import {ADD_RECIPE, IS_FETCHING} from '../../store/recipe/types'
 import {addRecipe} from '../../api'
 
 
@@ -248,8 +248,16 @@ const RecipeForm =(props)=> {
   //   values.splice(i, 1);
   //   setFields(values);
   // }
+  // 
+
+
   const handleSubmit = e => {
     e.preventDefault()
+    const form = new FormData()
+    fileState.items.forEach((item,i) => {
+      form.append(`items[${i}]`, item)
+    })
+    form.append("imageable_type", "Recipe")
     // make a fetch request to edit the current user
     const recipe = {
       ...infoState,
@@ -257,20 +265,83 @@ const RecipeForm =(props)=> {
       ...instructState,
       user_id: currentUser.id
     }
-    console.log(recipe)
+
+    form.append("recipe", JSON.stringify(recipe))
+   
     // debugger
-    addRecipe(recipe)
+    // addRecipe(form)
+    //   .then(recipe => dispatch({type: ADD_RECIPE, payload: recipe}))
+    // console.log("want to redirect : ", props)
+    dispatch({type: IS_FETCHING, payload: true})
+    fetch("http://localhost:3000/recipes", {
+                method: "POST",
+                body: form
+          })
+            .then(r => r.json())
+            .then(data => dispatch({type: ADD_RECIPE, payload: data}))
+            history.push('/home')
+    
+    
+    /*const form = new FormData()
+    fileState.items.forEach((item,i) => {
+      form.append(`items[${i}]`, item)
+    })
+    form.append("imageable_type", "Recipe")
+    // make a fetch request to edit the current user
+    const recipe = {
+      ...infoState,
+      ...ingredState,
+      ...instructState,
+      user_id: currentUser.id
+    }
+
+    form.append("recipe", JSON.stringify(recipe))
+   
+    // debugger
+    addRecipe(form)
       .then(recipe => dispatch({type: ADD_RECIPE, payload: recipe}))
     console.log("want to redirect : ", props)
-    
-    history.push('/home')
-    // return <Redirect to={"/home"} />
-    // then update that user in state in our App component
+    history.push(`/${currentUser.username}`)*/
   }
 
+  //could be array
+  const [fileState, setFileState] = useState({
+    items: [],
+    caption: ""
+   })
+  const handleFileUpload = (e)=>{
+    console.log(e.target.files)
+    e.persist()
 
+    //for multiple file
+    let  f = e.target.files
+    let items = []
+    Object.keys(f).forEach(i => items.push(f[i]))
+    console.log(items)
+    setFileState((prevState) => ({
+      ...prevState,
+      items: items
+    }))
+    // let  items = e.target.files[0]
+    // setFileState((prevState) => ({
+    //     ...prevState,
+    //     items: items
+    //   }))
 
-  
+    
+    // console.log("items : ", items)
+    // debugger
+    // e.target.files.map(file => {
+    //   return({
+    //     [file.type.split('/')[0]] : e.target.files[0]
+    //   })
+      
+    // })
+
+    
+    // [e.target.files[0].type.split('/')[0]] : e.target.files[0]
+  }
+
   console.log("ingredState", instructState);
     return (
       
@@ -311,6 +382,19 @@ const RecipeForm =(props)=> {
         {renderInstruction()}
         <input type="button" value="add instructions" onClick={addInstructions} />
   <br/>
+  <br/>
+  <br/>
+        <label>Image Upload
+          <input type="file" name="file" onChange={handleFileUpload} multiple/>
+        </label>
+        <label>Video Upload
+          <input type="file" name="video" onChange={handleFileUpload} />
+        </label>
+          <br/>
+        <label htmlFor="caption">
+          Caption
+          <input type="text" name="caption" />
+        </label>
         {/* <label htmlFor="caption">
         Caption
         <input type="text" name="caption" />

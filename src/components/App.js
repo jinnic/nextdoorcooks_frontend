@@ -7,7 +7,6 @@ import NavBar from './NavBar'
 import Account from './Account'
 import Recipe from './Recipe/Recipe'
 import RecipeForm from './Recipe/RecipeForm'
-import UserContainer from './UserContainer'
 import RecipeContainer from './Recipe/RecipeContainer'
 import { getCurrentUser, getRecipes, getCurrentUserFollowees} from '../api/index'
 import {setCurrentUser, setProfile, fetchUsers} from '../store/user/actions'
@@ -17,7 +16,7 @@ import {SET_RECIPES} from '../store/recipe/types'
 //destructire props and use history for routing
 const App =( {history} )=> {
 
-
+  const fetching = useSelector(state=>state.recipe.recipeFetching)
   const currentUser = useSelector(state => state.user.currentUser)
   const isLoading = useSelector(state => state.user.isLoading)
   const followees = useSelector(state => state.user.followees)
@@ -96,7 +95,7 @@ const App =( {history} )=> {
     dispatch({type: RESET_CURRENTUSER})
   }
 
-  if (isLoading) return <h1>IS LOADING</h1>
+  if (isLoading || fetching) return <h1>IS LOADING</h1>
 
     console.log("In App, state:", stateData)
     return (

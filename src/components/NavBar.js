@@ -1,8 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-const NavBar = ({ currentUser, handleLogout }) => {
-  // ${currentUser.username}
+const NavBar = ({ handleLogout }) => {
+  const currentUser = useSelector(state => state.user.currentUser)
   return (
     <header className={'NavBar'}>
       <div className={'Logo'}>
@@ -11,7 +12,7 @@ const NavBar = ({ currentUser, handleLogout }) => {
       <div className={'Menu'}>
         {currentUser ? (
           <>
-            <Link to={`${currentUser.username}`}>Account</Link>
+            <Link to={`/${currentUser.username}`}>Account</Link>
             <Link to="/recipe/new">Add Recipe</Link>
             <button onClick={handleLogout}>Logout</button>
           </>

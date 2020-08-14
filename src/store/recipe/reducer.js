@@ -1,7 +1,8 @@
-import {SET_RECIPES, ADD_RECIPE, UPDATE_RECIPE, DELETE_RECIPE, DELETE_RECIPES_OF_USER} from './types'
+import {IS_FETCHING, SET_RECIPES, ADD_RECIPE, UPDATE_RECIPE, DELETE_RECIPE, DELETE_RECIPES_OF_USER} from './types'
 
 const defaultState = {
-  recipes: []
+  recipes: [],
+  recipeFetching: false
 }
 
 const reducer = (state = defaultState , action) =>{
@@ -18,7 +19,13 @@ const reducer = (state = defaultState , action) =>{
         recipes: [
           ...state.recipes,
           action.payload
-        ]
+        ],
+        recipeFetching: false
+      }
+    case IS_FETCHING:
+      return{
+        ...state,
+        recipeFetching: action.payload
       }
     case UPDATE_RECIPE:
       return{

@@ -83,13 +83,14 @@ export const getRecipes = () =>{
             .then(r => r.json())
 }
 
-export const addRecipe = (recipe)=>{
+//using FormData so data is already stringified
+export const addRecipe = (form)=>{
   return fetch("http://localhost:3000/recipes", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(recipe)
+            body: form
           })
             .then(r => r.json())
 }

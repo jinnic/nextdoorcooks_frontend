@@ -1,5 +1,6 @@
 export const SET_RECIPES = "SET_RECIPES"
 export const ADD_RECIPE = "ADD_RECIPE"
+export const IS_FETCHING = "IS_FETCHING"
 export const UPDATE_RECIPE = "UPDATE_RECIPE"
 export const DELETE_RECIPE = "DELETE_RECIPE"
 export const DELETE_RECIPES_OF_USER = "DELETE_RECIPES_OF_USER"
