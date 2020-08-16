@@ -1,4 +1,7 @@
-import {SET_USERS, SET_CURRENTUSER, SET_CURRENTUSER_FOLLOWEES, ADD_CURRENTUSER_FOLLOWEES, REMOVE_CURRENTUSER_FOLLOWEES, SET_PROFILE, RESET_CURRENTUSER, UPDATE_USER, DELETE_USER, ADD_TO_USERS} from './types'
+import {SET_USERS, ADD_TO_USERS, UPDATE_USERS,
+       SET_CURRENTUSER, SET_CURRENTUSER_FOLLOWEES, ADD_CURRENTUSER_FOLLOWEES, REMOVE_CURRENTUSER_FOLLOWEES, 
+       SET_PROFILE, RESET_CURRENTUSER, 
+       UPDATE_USER, DELETE_USER} from './types'
 
 const defaultState = {
   currentUser: null,
@@ -18,8 +21,13 @@ const reducer = (state = defaultState , action) =>{
     case SET_CURRENTUSER:
       return {
         ...state,
-        currentUser: action.payload
-        
+        currentUser: action.payload,
+        users: state.users.map(u => {
+          if(action.payload.id === u.id){
+            return action.payload
+          }
+          return u
+        })
       }
     case SET_CURRENTUSER_FOLLOWEES:
     return {
@@ -40,6 +48,16 @@ const reducer = (state = defaultState , action) =>{
           ...state.users,
           action.payload
         ]
+    }
+    case UPDATE_USERS:
+    return{
+      ...state,
+      users: state.users.map(u => {
+        if(action.payload.id === u.id){
+          return action.payload
+        }
+        return u
+      })
     }
     case SET_PROFILE:
       return {

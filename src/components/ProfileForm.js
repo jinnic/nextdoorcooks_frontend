@@ -19,7 +19,10 @@ const ProfileForm =({ handleEdit})=> {
     e.preventDefault()
     // make a fetch request to edit the current user
     updateUser(userProfile)
-      .then(newUser => dispatch({type: SET_CURRENTUSER, payload: newUser }))
+      .then(newUser => {
+        dispatch({type: SET_CURRENTUSER, payload: newUser })
+      })
+    
     // then update that user in state in our App component
     handleEdit(false)
   }

@@ -1,6 +1,7 @@
 export const SET_CURRENTUSER = "SET_CURRENTUSER"
 export const SET_USERS = "SET_USERS"
 export const ADD_TO_USERS = "ADD_TO_USERS"
+export const UPDATE_USERS = "UPDATE_USERS"
 export const RESET_CURRENTUSER = "RESET_CURRENTUSER"
 export const UPDATE_USER = "UPDATE_USER"
 export const DELETE_USER = "DELETE_USER"

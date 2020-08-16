@@ -2,7 +2,8 @@ import {IS_FETCHING, SET_RECIPES, ADD_RECIPE, UPDATE_RECIPE, DELETE_RECIPE, DELE
 
 const defaultState = {
   recipes: [],
-  recipeFetching: false
+  recipeFetching: false,
+  query: ""
 }
 
 const reducer = (state = defaultState , action) =>{
@@ -11,7 +12,8 @@ const reducer = (state = defaultState , action) =>{
     case SET_RECIPES:
       return {
         ...state,
-        recipes: action.payload
+        recipes: action.payload,
+        recipeFetching: false
       }
     case ADD_RECIPE:
       return {
@@ -48,6 +50,16 @@ const reducer = (state = defaultState , action) =>{
       ...state,
       recipes: state.recipes.filter(r => r.user.id !== action.payload.id)
     }
+    // case "FILTER_BY_VALUE":
+    //   return {
+    //     ...state,
+    //     query: action.payload,
+    //   }
+    
+    // case "RESET_QUERY":
+    //   return{
+    //     query: ""
+    //   }
     default:
       return state
   }

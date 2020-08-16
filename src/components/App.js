@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Switch, Route, withRouter, Redirect } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import SignUp from './SignUp'
 import Login from './Login'
+import Filter from './Filter'
 import NavBar from './NavBar'
 import Account from './Account'
 import Recipe from './Recipe/Recipe'
@@ -11,26 +12,71 @@ import RecipeContainer from './Recipe/RecipeContainer'
 import { getCurrentUser, getRecipes, getCurrentUserFollowees} from '../api/index'
 import {setCurrentUser, setProfile, fetchUsers} from '../store/user/actions'
 import {SET_CURRENTUSER, SET_PROFILE, RESET_CURRENTUSER, SET_CURRENTUSER_FOLLOWEES} from '../store/user/types'
-import {SET_RECIPES} from '../store/recipe/types'
+import {SET_RECIPES, IS_FETCHING} from '../store/recipe/types'
+
 
 //destructire props and use history for routing
-const App =( {history} )=> {
+const App =( props )=> {
+  const history = props.history
+  const dispatch  = useDispatch()
 
   const fetching = useSelector(state=>state.recipe.recipeFetching)
   const currentUser = useSelector(state => state.user.currentUser)
   const isLoading = useSelector(state => state.user.isLoading)
+  const recipes = useSelector(state => state.recipe.recipes)
   const followees = useSelector(state => state.user.followees)
-  const users = useSelector(state => state.user.users)
-  const stateData = useSelector(state => {
-    return{
-      currentUser: state.user.currentUser,
-      users: state.user.users,
-      userProfile: state.user.userProfile
+
+  
+  const query = useSelector(state => state.search.query)
+  const filterByInput=(e)=>{
+    let input = e.target.value;
+    dispatch({ type: "SET_QUERY", payload: input})
+    console.log("in filter by input fn : ",query)
+  }
+  const reSetQuery = (e) =>{
+    let click = e.target.pathname
+    if(click === "/home"){
+      dispatch({ type: "RESET_QUERY"})
     }
-  })
-  const dispatch  = useDispatch()
+    // debugger
+  }
+
+  const sort = useSelector(state=> state.search.sort)
+  const filterByCusines =(e)=>{
+    let input = e.target.name;
+    dispatch({ type: "SET_SORT", payload: input})
+    console.log("in filterByCusines fn : ",input)
+  }
+
+
+  const [searchResults, setSearchResults] = useState([]);
+  useEffect(()=>{
+    let results = recipes
+    let queryResult = []
+    
+    if (query !== "" ) {
+      queryResult = recipes.filter(r => r.name.toLowerCase().includes(query.toLowerCase()))
+      console.log("QUERY RESULT : ", queryResult)
+    }
+
+    if (queryResult.length > 0 && sort !== ""){
+       results = queryResult.filter(r => r.name.toLowerCase().includes(sort.toLowerCase())) 
+    }
+
+    if (queryResult.length === 0 && sort !== ""){
+      results = recipes.filter(r => r.name.toLowerCase().includes(sort.toLowerCase()))   
+      console.log("SORT RESULT : ", results)
+    }
+
+    setSearchResults(results);
+    
+  },[query, recipes, sort])
+
+  
+
   
   useEffect(()=>{
+    dispatch({type:IS_FETCHING, payload: true})
     getRecipes()
       .then(recipes => dispatch({type: SET_RECIPES, payload: recipes }))
     dispatch(fetchUsers())
@@ -68,10 +114,6 @@ const App =( {history} )=> {
     
   }, [])
 
-  //fetch initial data : currentUser and users
-  // useEffect(() => {
-   
-  // },[dispatch])
   
   // log user in when component mounts
   const handleLogin = currentUser => {
@@ -96,18 +138,14 @@ const App =( {history} )=> {
   }
 
   if (isLoading || fetching) return <h1>IS LOADING</h1>
-
-    console.log("In App, state:", stateData)
+  console.log("In App Props : ", props.state)
     return (
       <>
-        <NavBar currentUser={currentUser} handleLogout={handleLogout} />
+        <Filter  query={query} handleSetQuery={filterByInput} handleSetSort={filterByCusines} />
+        <NavBar currentUser={currentUser} handleLogout={handleLogout} reSetQuery={reSetQuery} />
         <main>
         <div className={'Container'}>
           <Switch>
-            {/* <Route path={`/:slug`}>
-              <Account />
-            </Route> */}
-            
             <Route path="/signup">
               <SignUp handleLogin={handleLogin} dispatch={dispatch} />
             </Route>
@@ -123,7 +161,8 @@ const App =( {history} )=> {
             <Route exact path="/home" >
               {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
               <h2>Recipes</h2>  
-                  <RecipeContainer />
+              {searchResults && searchResults.length ? <RecipeContainer recipes={searchResults} />:""}
+                  {/* <RecipeContainer recipes={[]} /> */}
             </Route>
             <Route path='/:slug'> 
               {/* <h1>SLIUUUUUUUUUGGGGGG PAGE</h1> */}
@@ -131,7 +170,10 @@ const App =( {history} )=> {
             </Route>
             <Route exact path="/" >
               <h1>Please Login or Sign Up</h1>
-              <RecipeContainer />
+              {searchResults && searchResults.length ? <RecipeContainer recipes={searchResults} />:""}
+
+              {/* {filterRecipes() && filterRecipes().length ? <RecipeContainer recipes={filterRecipes()}/>: ""} */}
+              {/* <RecipeContainer recipes={filterRecipes()} /> */}
             </Route>
             
           </Switch>

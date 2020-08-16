@@ -9,17 +9,20 @@ import { averageRatings } from '../Rating/index'
 
 
 const Recipe = () => {
+
+  const isLoading = useSelector(state => state.user.isLoading)
   const dispatch = useDispatch()
   const currentUser = useSelector(state => state.user.currentUser)
   const recipes = useSelector(state => state.recipe.recipes)
   const [editRecipe,setEditRecipe] = useState(false)
-  // debugger
+  
   const location = useLocation()
   const history = useHistory()
-  const recipe_id = location.state.id
+  console.log(location,history)
+  const recipe_id = location.pathname.split('/')[2]
   const recipe = recipes.find(r=> r.id === recipe_id)
-  const {name, duration, description, ingredients, instructions, user, ratings, likes} = recipe
 
+  const {name, duration, description, ingredients, instructions, user, ratings, likes} = recipe
   
   
   const rating = ratings.filter(r => r.user_id === currentUser.id)
@@ -30,6 +33,7 @@ const Recipe = () => {
     //console.log("USER LIKE THIS RECIPE???", like)
      return like.length === 0 ? false : true
   }
+
   const renderIngredients =()=>{
     if(ingredients !== undefined){
       return ingredients.map( i => {
@@ -155,6 +159,7 @@ const Recipe = () => {
   const handleChange = e =>{
     setComment( e.target.value)
   }
+  if (isLoading) return <h1>IS LOADING</h1>
 
   console.log(rating.comment)
   return (

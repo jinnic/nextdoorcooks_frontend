@@ -27,7 +27,7 @@ const RecipeForm =(props)=> {
       }
     ]
   })
-  const measurements = ['n/a', 'teaspoon', 'tablespoon', 'oz', 'cup', 'lb']
+  const measurements = ['n/a', 'drop','pinch', 'dash','teaspoon','tablespoon', 'ounce', 'pounds', 'cup', 'pint', 'quart', 'gallon']
 
   const [instructState, setInstructions] = useState({
     instructions: [

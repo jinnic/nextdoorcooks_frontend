@@ -1,14 +1,15 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import Search from './Search'
 
-const NavBar = ({ handleLogout }) => {
-  const currentUser = useSelector(state => state.user.currentUser)
+
+const NavBar = ({ currentUser, handleLogout, reSetQuery}) => {
   return (
-    <header className={'NavBar'}>
+    <header key={'navBar'} className={'NavBar'}>
       <div className={'Logo'}>
-        <Link to="/home">Home</Link>
+        <Link onClick={reSetQuery} to="/home">Home</Link>
       </div>
+      
       <div className={'Menu'}>
         {currentUser ? (
           <>
@@ -23,6 +24,7 @@ const NavBar = ({ handleLogout }) => {
             </>
           )}
       </div>
+      
     </header>
   )
 }
