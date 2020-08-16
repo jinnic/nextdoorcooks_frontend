@@ -33,12 +33,14 @@ const App =( props )=> {
     dispatch({ type: "SET_QUERY", payload: input})
     console.log("in filter by input fn : ",query)
   }
+  
   const reSetQuery = (e) =>{
     let click = e.target.pathname
-    if(click === "/home"){
+
+    if(click === "/home" || click === "/recipes" || click === "/experiances" ){
       dispatch({ type: "RESET_QUERY"})
+      dispatch({ type: "RESET_SORT"})
     }
-    // debugger
   }
 
   const sort = useSelector(state=> state.search.sort)
@@ -48,6 +50,7 @@ const App =( props )=> {
     console.log("in filterByCusines fn : ",input)
   }
 
+  
 
   const [searchResults, setSearchResults] = useState([]);
   useEffect(()=>{
@@ -60,11 +63,35 @@ const App =( props )=> {
     }
 
     if (queryResult.length > 0 && sort !== ""){
-       results = queryResult.filter(r => r.name.toLowerCase().includes(sort.toLowerCase())) 
+       results = queryResult.filter(r => {
+        for(let i = 0 ; i <r.cuisines.length; i++){
+          if (r.cuisines[i].toLowerCase()===sort.toLowerCase()) return r
+        }
+      })
     }
 
     if (queryResult.length === 0 && sort !== ""){
-      results = recipes.filter(r => r.name.toLowerCase().includes(sort.toLowerCase()))   
+      // results = recipes.filter(r => r.cuisines.includes(sort.toLowerCase()))   
+      
+      results = recipes.filter(r => {
+        for(let i = 0 ; i <r.cuisines.length; i++){
+          if (r.cuisines[i].toLowerCase()===sort.toLowerCase()) return r
+        }
+      })
+    
+    if (query !== "" && sort !== ""){
+      // results = recipes.filter(r => r.cuisines.includes(sort.toLowerCase()))   
+      
+      let sortResults = recipes.filter(r => {
+        for(let i = 0 ; i <r.cuisines.length; i++){
+          if (r.cuisines[i].toLowerCase()===sort.toLowerCase()) return r
+        }
+      })
+
+      results = sortResults.filter(r => r.name.toLowerCase().includes(query.toLowerCase()))
+    }
+
+      
       console.log("SORT RESULT : ", results)
     }
 
@@ -138,7 +165,7 @@ const App =( props )=> {
   }
 
   if (isLoading || fetching) return <h1>IS LOADING</h1>
-  console.log("In App Props : ", props.state)
+  console.log("In App Props : ", props)
     return (
       <>
         <Filter  query={query} handleSetQuery={filterByInput} handleSetSort={filterByCusines} />
@@ -152,11 +179,21 @@ const App =( props )=> {
             <Route path="/login">
               <Login handleLogin={handleLogin} />
             </Route>
-            <Route path="/recipe/new">
+            <Route path="/recipes/new">
               {currentUser ? <RecipeForm /> : <Redirect to='/' />}
             </Route>
-            <Route path={`/recipe/:id/:slug`}>
+            <Route path={`/recipes/:id/:slug`}>
               {currentUser ? <Recipe /> : <Redirect to='/' />}
+            </Route>
+            <Route  exact path="/recipes" >
+              {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
+              <h2>Recipes</h2>  
+              {searchResults && searchResults.length ? <RecipeContainer recipes={searchResults} />:""}
+                  {/* <RecipeContainer recipes={[]} /> */}
+            </Route>
+            <Route  exact path="/experiances" >
+              {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
+              <h2>Experiances</h2>  
             </Route>
             <Route exact path="/home" >
               {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}

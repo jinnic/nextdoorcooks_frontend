@@ -2,7 +2,12 @@ import React from 'react'
 
 const Sort =({handleSetSort })=> {
 
-  const cusineType = ['a','b','c']
+  const cusineType = ['African', 'American', 'British', 'Cajun', 'Caribbean',
+                        'Chinese', 'Eastern', 'European', 'French', 
+                        'German','Greek', 'Indian','Irish','Italian','Japanese',
+                        'Jewish','Korean','Latin American','Mediterranean',
+                        'Mexican','Middle Eastern','Nordic','Southern','Spanish',
+                        'Thai','Vietnamese']
 
   const handleClick = e => {
     handleSetSort(e)

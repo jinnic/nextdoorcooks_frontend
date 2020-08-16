@@ -18,8 +18,8 @@ const Recipe = () => {
   
   const location = useLocation()
   const history = useHistory()
-  console.log(location,history)
-  const recipe_id = location.pathname.split('/')[2]
+  console.log(location,history, recipes)
+  const recipe_id = parseInt(location.pathname.split('/')[2])
   const recipe = recipes.find(r=> r.id === recipe_id)
 
   const {name, duration, description, ingredients, instructions, user, ratings, likes} = recipe
@@ -155,7 +155,13 @@ const Recipe = () => {
     }
     
   }
-
+  const renderImages = ()=>{
+    if(recipe.items[0].image !== null){
+      return <img src={recipe.items[0].image}/>
+    }else{
+      return <video src={recipe.items[0].video} controls/>
+    }
+  }
   const handleChange = e =>{
     setComment( e.target.value)
   }
@@ -217,7 +223,13 @@ const Recipe = () => {
                 <p>{description}</p>
               </div>
               <div className={'Image'}>
-                <img src='https://cdnp.iconscout.com/photo/premium/thumb/vintage-food-background-1696185-1438016.jpg'/>
+              {recipe.items.length > 0 ? 
+                renderImages()
+
+              :
+              <img src='https://cdnp.iconscout.com/photo/premium/thumb/vintage-food-background-1696185-1438016.jpg'/>
+
+              }
               </div>
             </div>
 

@@ -15,16 +15,19 @@ const RecipeForm =(props)=> {
     name: "",
     duration: 0,
     description: "",
+    cuisines: [""]
    })
   const {name, duration, description} = infoState
   
   const [ingredState, setIngredients] = useState({
     ingredients: [
-      {
-        name: "", 
-        amount: 0,
-        measurement:"n/a"
-      }
+        { 
+          category: "",
+          name: "", 
+          amount: 0,
+          measurement:"n/a"
+        }
+      
     ]
   })
   const measurements = ['n/a', 'drop','pinch', 'dash','teaspoon','tablespoon', 'ounce', 'pounds', 'cup', 'pint', 'quart', 'gallon']
@@ -133,12 +136,23 @@ const RecipeForm =(props)=> {
       )
     })
   }
-
+  const category_types = ['Sauce', 'Marinate', 'Main']
 
   const renderIngredient = () =>{
     return ingredState.ingredients.map((item, i)=> {
       return(
         <div key={`ingredient_${i}`}>
+          <label>Category</label>
+          <input
+            list="category_list"
+            name="category"
+            value={item.category}
+            onChange={e=>handleIngredient(e,i)}
+          />
+          <datalist id="category_list">
+            {category_types.map(category => <option value={category} key={category}/>)}
+          </datalist>
+
           <label>Name</label>
           <input
             type="text"
@@ -177,7 +191,7 @@ const RecipeForm =(props)=> {
       )
     })
   }
-
+  
   const handleIngredient = (e, i) =>{
     console.log(e, i);
     let key = e.target.name
@@ -186,11 +200,13 @@ const RecipeForm =(props)=> {
     setIngredients({ ingredients });
   }
 
+
   const addIngredient = () =>{
     setIngredients((prevState) => ({
       ingredients: [
         ...prevState.ingredients, 
         {
+          category: "",
           name: "", 
           amount: 0,
           measurement:"n/a"
@@ -222,8 +238,18 @@ const RecipeForm =(props)=> {
       //       [key]: e.target.value
       //     }
       //   ],
-        
       // })
+    }else if(e.target.name ==='myCusine'){
+      setInfoState({
+        ...infoState,
+        cuisines: infoState.cuisines.map((val, index)=>{
+          if(index === i){
+            return e.target.value
+          }
+          return val
+        })
+      })
+      
     }else{
       setInfoState({
         ...infoState,
@@ -265,7 +291,8 @@ const RecipeForm =(props)=> {
       ...instructState,
       user_id: currentUser.id
     }
-
+    debugger
+    console.log(recipe)
     form.append("recipe", JSON.stringify(recipe))
    
     // debugger
@@ -279,7 +306,7 @@ const RecipeForm =(props)=> {
           })
             .then(r => r.json())
             .then(data => dispatch({type: ADD_RECIPE, payload: data}))
-            history.push('/home')
+            history.push(`/${currentUser.username}`)
     
     
     /*const form = new FormData()
@@ -341,6 +368,53 @@ const RecipeForm =(props)=> {
     
     // [e.target.files[0].type.split('/')[0]] : e.target.files[0]
   }
+  const cusine_types = ['African', 'American', 'British', 'Cajun', 'Caribbean',
+                        'Chinese', 'Eastern', 'European', 'French', 
+                        'German','Greek', 'Indian','Irish','Italian','Japanese',
+                        'Jewish','Korean','Latin American','Mediterranean',
+                        'Mexican','Middle Eastern','Nordic','Southern','Spanish',
+                        'Thai','Vietnamese']
+
+
+  const renderCusineOptions = ()=>{
+    
+    return infoState.cuisines.map((c, i)=>{
+      return (
+        <div key={`cusine_list_div_${i}`}>
+        <input list="cusine_list" name="myCusine" value={c} onChange={(e)=>handleChange(e, i)} key={`cusine_list_${i}`} />
+        <datalist id="cusine_list">
+         {cusine_types.map(cusine => <option value={cusine} key={cusine}/>)}
+        
+        </datalist>
+        
+        <input
+            type="button"
+            value="remove"
+            onClick={()=>removeCuisine(i)}
+          />
+        </div>
+      )
+    })
+    
+  }
+  const addCusine =()=>{
+    setInfoState((prevState) => ({
+      ...prevState,
+      cuisines: [
+        ...prevState.cuisines, 
+        ""
+      ]
+    }));
+  }
+  const removeCuisine =(i) =>{
+    console.log(i)
+    let newCusines = [...infoState.cuisines];
+    newCusines.splice(i, 1);
+    setInfoState({
+      ...infoState,
+      cuisines: newCusines
+    })
+  }
 
   console.log("ingredState", instructState);
     return (
@@ -356,6 +430,18 @@ const RecipeForm =(props)=> {
           value={name}
           onChange={handleChange}
         />
+  <br/> 
+        <label>Choose a Cuisine type :
+          {renderCusineOptions()}
+          { infoState.cuisines.length <= 2 ?
+        <input type="button" value="add cusine" onClick={addCusine} />
+        :
+        <>
+          <input type="button" value="add cusine" onClick={addCusine} disabled/>
+          <span>you've reached maximum number</span>
+        </>
+         }
+        </label>
   <br/>      
         <label>Duration in MIN</label>
         <input
@@ -380,7 +466,7 @@ const RecipeForm =(props)=> {
   <br/>
         <label>Instructions</label>
         {renderInstruction()}
-        <input type="button" value="add instructions" onClick={addInstructions} />
+          <input type="button" value="add instructions" onClick={addInstructions} />
   <br/>
   <br/>
   <br/>

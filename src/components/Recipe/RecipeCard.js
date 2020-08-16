@@ -82,8 +82,7 @@ const RecipeCard = ({recipe}) => {
     }else{
       let recipeName = recipe.name.replace(/\s/g,'_').toLowerCase()
       history.push({
-        pathname: `/recipe/${recipe.id}/${recipeName}`,
-        state: {id: recipe.id}
+        pathname: `/recipes/${recipe.id}/${recipeName}`
       })
     }
     //debugger

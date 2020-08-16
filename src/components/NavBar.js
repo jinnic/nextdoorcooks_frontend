@@ -1,24 +1,35 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Search from './Search'
 
 
 const NavBar = ({ currentUser, handleLogout, reSetQuery}) => {
+
+  const handleClick =(e)=>{
+    e.preventDefault();
+    e.stopPropagation();  
+    debugger
+    reSetQuery(e)
+  }
+  
   return (
     <header key={'navBar'} className={'NavBar'}>
       <div className={'Logo'}>
         <Link onClick={reSetQuery} to="/home">Home</Link>
       </div>
       
-      <div className={'Menu'}>
+      <div key={'nav_menu'} className={'Menu'}>
         {currentUser ? (
           <>
+            <Link onClick={reSetQuery} to="/recipes">Recipe</Link>
+            <Link onClick={reSetQuery} to="/experiances">Experiances</Link>
             <Link to={`/${currentUser.username}`}>Account</Link>
-            <Link to="/recipe/new">Add Recipe</Link>
+            <Link to="/recipes/new">Add Recipe</Link>
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
             <>
+              <Link onClick={reSetQuery} to="/recipes" >Recipe</Link>
+              <Link onClick={reSetQuery} to="/experiances" >Experiances</Link>
               <Link to="/signup">Signup</Link>
               <Link to="/login">Login</Link>
             </>
