@@ -199,6 +199,7 @@ const App =( props )=> {
               {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
               <h2>Recipes</h2>  
               {searchResults && searchResults.length ? <RecipeContainer recipes={searchResults} />:""}
+              <h2>Experiances</h2> 
                   {/* <RecipeContainer recipes={[]} /> */}
             </Route>
             <Route path='/:slug'> 

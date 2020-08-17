@@ -18,18 +18,16 @@ const NavBar = ({ currentUser, handleLogout, reSetQuery}) => {
       </div>
       
       <div key={'nav_menu'} className={'Menu'}>
+      <Link onClick={reSetQuery} to="/recipes">Recipe</Link>
+      <Link onClick={reSetQuery} to="/experiances">Experiances</Link>
         {currentUser ? (
-          <>
-            <Link onClick={reSetQuery} to="/recipes">Recipe</Link>
-            <Link onClick={reSetQuery} to="/experiances">Experiances</Link>
+          <>          
             <Link to={`/${currentUser.username}`}>Account</Link>
             <Link to="/recipes/new">Add Recipe</Link>
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
             <>
-              <Link onClick={reSetQuery} to="/recipes" >Recipe</Link>
-              <Link onClick={reSetQuery} to="/experiances" >Experiances</Link>
               <Link to="/signup">Signup</Link>
               <Link to="/login">Login</Link>
             </>
