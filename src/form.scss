@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500&display=swap');
+
+$font-color: rgb(75, 75, 75);
+$mid-text: rgb(108, 108, 108);
+$subtext: gray;
+$placeholder: rgb(180, 179, 179);
+$form-line: #95989A;
+
+.RecipeForm{
+  width: 500px;
+  
+  color: $font-color;
+
+  margin: 0 auto;
+  font-family: 'Roboto';
+  margin-bottom: 50px;
+
+  #FileBtn{
+    overflow: visible;
+    height: 45px;
+    padding: 5px 0;
+    margin-top: 12px;
+    outline: none;
+  }
+  input[type="file"]#FileBtn::before{
+    content: 'Files';
+    border-radius: 30%;
+    width: 170px;
+    height: 35px;
+    border: 1px solid $mid-text;
+    border-radius: 18px;
+    font-size: 12pt;
+    background-color: white;
+    margin: 15px 0;
+    color: $mid-text;
+    padding: 5px 20px;
+  }
+  input[type="file"]#FileBtn::focus{
+    outline: none;
+    background-color: $mid-text;
+    color: white;
+  }
+  input[type="file"]#FileBtn::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  .FileLabel{
+    padding-right: 10px;
+    display: inline;
+  }
+  .FilePreview{
+    border: 1px solid rgba($color: #c2bebe, $alpha: 1.0);
+    border-radius: 4px;
+    padding: 2rem;
+    margin-bottom: 15px;
+  }
+
+  .Btn{
+    border-radius: 30%;
+    width: 170px;
+    height: 35px;
+    border: 1px solid $mid-text;
+    border-radius: 18px;
+    font-size: 12pt;
+    background-color: white;
+    margin: 15px 0;
+    color: $mid-text;
+  }
+
+  .SubmitBtn{
+    border-radius: 30%;
+    width: 170px;
+    height: 35px;
+    border: 1px solid #9CBF50;
+    border-radius: 18px;
+    font-size: 14pt;
+    background-color: rgba($color: white, $alpha: 1.0);
+    margin: 15px 0;
+    color:  #9CBF50;
+  }
+
+  h1{
+    font-family: 'Playfair Display';
+    font-size: 36pt;
+    color: $font-color;
+  }
+  h5{
+    font-family: 'Roboto';
+    font-weight: 500;
+    font-size: 16pt;
+    color: $mid-text;
+    margin-bottom: 1em;
+  }
+  label{
+    font-weight: 400;
+    font-size: 12pt;
+    color: $subtext;
+    margin:5px 0;
+    display: block;
+  }
+
+  ::placeholder {
+    color: $placeholder;
+  }
+  #submission{
+    text-align: center;
+  }
+
+  input[list], input[type='text'], input[type='number'], textarea, select{
+    margin-top: 0.8rem;
+    font-size: 16pt;
+    color: $mid-text;
+    width: 100%;
+    border: 0;
+    line-height: 2.3rem;
+    border-bottom: $form-line 1px solid;
+  }
+  input[type="button"], input[type="file"], input[type="submit"]{
+    cursor:pointer;
+  }
+  textarea{
+    // outline: none;
+    border-radius: 4px;
+    border: 1px solid $form-line;
+    overflow: auto;
+    // padding: 10px;
+    // box-shadow: 1px 1px 1px #999;
+  }
+  input[list]{
+    border-radius: 0;
+    // border-color: blue;
+    line-height: 2.3rem;
+    padding-left: 4px;
+  }
+
+  input:focus, textarea:focus {
+    background   : white;
+    border-radius: 0px;
+    border: none;
+  }
+  // input[type='button']
+  .Ingrediant, .Instruction, .RecipeInfo{
+    position: relative;
+    border: 1px solid rgba($color: #c2bebe, $alpha: 1.0);
+    border-radius: 4px;
+    padding: 2rem;
+    margin-bottom: 15px;
+  }
+  
+  .Ingrediant, .Instruction {
+    .RemoveBtn {
+      right: 1rem;
+    }
+  } 
+  
+  .DataList{
+    position: relative;
+    // width: 470px;
+    input, select{
+      max-width: 470px;
+    }
+  }
+  .RemoveBtn {
+    cursor:pointer;
+    background-color: darkgray;
+    position: absolute;
+    border-radius: 1rem;
+    top: 1.2rem;
+    position: absolute;
+    right: -1rem;
+    display: inline;
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 1rem;
+    border: 0;
+    text-align: center;
+    color: white;
+  }
+
+  input + span{
+    color: $form-line;
+    display: block;
+    text-align: right;
+  }
+}
+
+.RecipeForm > *{
+  width: 100%;
+}
+

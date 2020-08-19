@@ -3,7 +3,6 @@ import { Switch, Route, withRouter, Redirect } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import SignUp from './SignUp'
 import Login from './Login'
-import Filter from './Filter'
 import NavBar from './NavBar'
 import Account from './Account'
 import Recipe from './Recipe/Recipe'
@@ -14,9 +13,22 @@ import {setCurrentUser, setProfile, fetchUsers} from '../store/user/actions'
 import {SET_CURRENTUSER, SET_PROFILE, RESET_CURRENTUSER, SET_CURRENTUSER_FOLLOWEES} from '../store/user/types'
 import {SET_RECIPES, IS_FETCHING} from '../store/recipe/types'
 
+// style - material-ui
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
 
 //destructire props and use history for routing
 const App =( props )=> {
+  //stype 
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
   const history = props.history
   const dispatch  = useDispatch()
 
@@ -44,38 +56,46 @@ const App =( props )=> {
   }
 
   const sort = useSelector(state=> state.search.sort)
-  const filterByCusines =(e)=>{
-    let input = e.target.name;
+  
+  const addFilter =(input)=>{
+    // let input = e.target.name;
     dispatch({ type: "SET_SORT", payload: input})
     console.log("in filterByCusines fn : ",input)
   }
 
-  
+  const removeFilter =(input)=>{
+    // let input = e.target.name;
+    dispatch({ type: "REMOVE_SORT", payload: input})
+    console.log("in removeFilter fn : ",input)
+  }
 
   const [searchResults, setSearchResults] = useState([]);
+  
   useEffect(()=>{
     let results = recipes
     let queryResult = []
     
     if (query !== "" ) {
-      queryResult = recipes.filter(r => r.name.toLowerCase().includes(query.toLowerCase()))
+      results = recipes.filter(r => r.name.toLowerCase().includes(query.toLowerCase()))
       console.log("QUERY RESULT : ", queryResult)
     }
 
-    if (queryResult.length > 0 && sort !== ""){
-       results = queryResult.filter(r => {
+    if (queryResult.length > 0 && sort.length > 0 ){
+      results = results.filter(r => {
         for(let i = 0 ; i <r.cuisines.length; i++){
-          if (r.cuisines[i].toLowerCase()===sort.toLowerCase()) return r
+          for(let j = 0 ; j <sort.length; j++){
+            if (r.cuisines[i].toLowerCase()===sort[j].toLowerCase()) return r
+          }
         }
       })
     }
 
-    if (queryResult.length === 0 && sort !== ""){
+    if (queryResult.length === 0 && sort.length > 0){
       // results = recipes.filter(r => r.cuisines.includes(sort.toLowerCase()))   
       
       results = recipes.filter(r => {
         for(let i = 0 ; i <r.cuisines.length; i++){
-          if (r.cuisines[i].toLowerCase()===sort.toLowerCase()) return r
+          if (r.cuisines[i].toLowerCase()===sort[0].toLowerCase()) return r
         }
       })
     
@@ -84,7 +104,9 @@ const App =( props )=> {
       
       let sortResults = recipes.filter(r => {
         for(let i = 0 ; i <r.cuisines.length; i++){
-          if (r.cuisines[i].toLowerCase()===sort.toLowerCase()) return r
+          for(let j = 0 ; j <sort.length; j++){
+            if (r.cuisines[i].toLowerCase()===sort[j].toLowerCase()) return r
+          }
         }
       })
 
@@ -164,12 +186,15 @@ const App =( props )=> {
     dispatch({type: RESET_CURRENTUSER})
   }
 
-  if (isLoading || fetching) return <h1>IS LOADING</h1>
+  if (isLoading || fetching){
+    return (<Backdrop className={classes.backdrop} open={open} >
+              <CircularProgress color="inherit" />
+            </Backdrop>)
+  }
   console.log("In App Props : ", props)
     return (
       <>
-        <Filter  query={query} handleSetQuery={filterByInput} handleSetSort={filterByCusines} />
-        <NavBar currentUser={currentUser} handleLogout={handleLogout} reSetQuery={reSetQuery} />
+        <NavBar currentUser={currentUser} handleLogout={handleLogout} reSetQuery={reSetQuery} query={query} filterByInput={filterByInput} filterByCusines={addFilter} removeFilter={removeFilter} />
         <main>
         <div className={'Container'}>
           <Switch>
@@ -181,6 +206,11 @@ const App =( props )=> {
             </Route>
             <Route path="/recipes/new">
               {currentUser ? <RecipeForm /> : <Redirect to='/' />}
+            </Route>
+            <Route path="/recipes/saved">
+              {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
+              <h2>Recipes</h2>  
+              {searchResults && searchResults.length ? <RecipeContainer recipes={searchResults} />:""}
             </Route>
             <Route path={`/recipes/:id/:slug`}>
               {currentUser ? <Recipe /> : <Redirect to='/' />}

@@ -183,13 +183,13 @@ const Recipe = () => {
               { 
                 haveLikes() ? 
                 <div>
-                    <span>{likes.length}</span>
-                    <button name='like' className={'LikeBtn'} onClick={handleClick}>♥︎</button> 
+                    <span>book marked {likes.length} times</span>
+                    <button name='like' className={'RecipeBookMark'} onClick={handleClick}>♥︎</button> 
                 </div>
                 : 
                 <div>
-                    <span>{likes.length}</span>
-                    <button name='like' className={'LikeBtn'} onClick={handleClick}>♡</button>
+                    <span>book marked {likes.length} times</span>
+                    <button name='like' className={'RecipeBookMark'} onClick={handleClick}>♡</button>
                 </div>
               }
             </div> 

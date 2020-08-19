@@ -1,10 +1,21 @@
 import React from 'react'
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 
-const Search =({handleSetQuery,query })=> {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      // margin: theme.spacing(1),
+      width: '25ch',
+    },
+  }
+}));
+
+const Search =({handleSetQuery, query })=> {
   // state = {
   //   searchTerm: ""
   // }
-
+  const classes = useStyles();
   const handleSubmit = e => {
     e.preventDefault()
     this.props.handleSetQuery(this.state.searchTerm)
@@ -23,18 +34,33 @@ const Search =({handleSetQuery,query })=> {
   
   
     return (
-      <form className="search" >
-        <input
-        key='search'
+      <form className={classes.root} noValidate autoComplete="off">
+        <TextField 
+          id="standard-basic" 
+          label="Search by Name"
+          key='search'
           type="text"
           name="searchTerm"
-          placeholder="Search..."
           autoComplete="off"
           value={query}
           onChange={handleChange}
-        />
-     </form>
+          />
+      </form>
+      
     )
 }
 
 export default Search
+
+{/* <form className="SearchBar" >
+  <label>Search</label>
+  <input
+    key='search'
+    type="text"
+    name="searchTerm"
+    placeholder="Search..."
+    autoComplete="off"
+    value={query}
+    onChange={handleChange}
+  />
+</form>  */}

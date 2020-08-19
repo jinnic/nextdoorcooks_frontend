@@ -19,18 +19,23 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Fab from '@material-ui/core/Fab';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+import HourglassFullIcon from '@material-ui/icons/HourglassFull';
+import FlareIcon from '@material-ui/icons/Flare';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     // maxWidth: 345,
-    minWidth: 200
+    minWidth: 50,
+    position: 'relative',
   },
   media: {
-    height: 0,
-    paddingTop: '100%', // 16:9 '56.25%'
+    height: 300,
+    // paddingTop: '100%', // 16:9 '56.25%'
+    borderRadius: 15,
+    border: '1px solid rgba(0, 0, 0, 0.2)',
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -51,6 +56,12 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(2),
     height: theme.spacing(2),
   },
+  fab: {
+    position: 'absolute',
+    top: theme.spacing(2),
+    right: theme.spacing(2),
+    color: red[500],
+  },
 }))
 
 
@@ -66,8 +77,8 @@ const RecipeCard = ({recipe}) => {
   if(currentUser === null || likes === undefined){
     like = []
   }else{
-    console.log("RECIPE CARD LIKES : ",likes, recipe.id)
-    console.log("RECIPE CARD RECIPE : ",recipe)
+    // console.log("RECIPE CARD LIKES : ",likes, recipe.id)
+    // console.log("RECIPE CARD RECIPE : ",recipe)
     like = likes.filter(l => l.user_id === currentUser.id)
   }
   
@@ -138,47 +149,93 @@ const RecipeCard = ({recipe}) => {
         {/* <button className={'LikeBtn'} onClick={handleClick}>♡</button> */}
   const renderLikeBtn =()=>{
     return haveLikes() ? 
-        <IconButton aria-label="add to favorites" onClick={handleClick} name="like" className={'LikeBtn'}>
-          <FavoriteIcon /><span> {likes.length}</span>
+        <IconButton aria-label="add to favorites" onClick={handleClick} name="like" >
+          <BookmarkIcon /><span> {likes.length}</span>
         </IconButton>
         :
-        <IconButton aria-label="add to favorites" onClick={handleClick} name="unlike" className={'LikeBtn'}>
-          <FavoriteBorderIcon/><span> {likes.length}</span>
+        <IconButton aria-label="remove favorites" onClick={handleClick} name="unlike">
+          <BookmarkBorderIcon/><span> {likes.length}</span>
         </IconButton>
         
   }
 
   const renderStars =()=>{
-    let stars = [<StarIcon/>,<StarIcon/>,<StarIcon/>,<StarIcon/>,<StarIcon/>]
+    let stars = [<StarBorderIcon/>,<StarBorderIcon/>,<StarBorderIcon/>,<StarBorderIcon/>,<StarBorderIcon/>]
     return stars.map((s,i)=>{
       if(i < averageRatings(ratings)){
-        return <StarIcon/>
+        debugger
+        return <StarIcon key={`star_${i}`} />
       }
-      return <StarBorderIcon/>
+      return <StarBorderIcon key={`star_${i}`} />
     })
   }
   // if (user) return <h1>USER IS HERE</h1>
 
   //debugger
   return (
-    <Card className={classes.root} onClick={handleClick}>
-    
+    // <Card key={recipe.name} className={classes.root} onClick={handleClick}>
+    <div key={recipe.name} className={"RecipeCard"} onClick={handleClick}> 
+     
       { (recipe.items.length > 0) ?
-      <CardMedia
+      <>
+        {haveLikes() ? 
+        <Fab className={classes.fab}  aria-label="add to favorites" onClick={handleClick} name="like" className={'LikeBtn'}>
+          <BookmarkIcon />
+        </Fab>
+        :
+        <Fab className={classes.fab} aria-label="add to favorites" onClick={handleClick} name="unlike" className={'LikeBtn'}>
+         <BookmarkBorderIcon/>
+        </Fab>}
+      <div className={'RecipeCardImage'} >
+        <img
+          className={'RecipeCardImage'}
+          src={`${recipe.items[0].image}`}
+        />
+      </div>
+      {/* <CardMedia
         className={classes.media}
         image={`${recipe.items[0].image}`}
-      />
+      /> */}
+      </>
       :
-      <CardMedia
-        className={classes.media}
-        
+      <img
+        className={'RecipeCardImage'}
       />
       }
-      <CardHeader
+      <div className={"RecipeCardSubTitle"}>
+        <div className={"RedcipeCardContent"}>
+          <span className={'Rating'}>
+            { ratings.length > 0 ?  <><StarIcon/><span>{averageRatings(ratings)}({ratings.length})</span></> : <><FlareIcon/><span>{'(new)'}</span></>} 
+          </span>
+          <span className={'Cuisines'}>
+            { ( recipe.cuisines.length > 0) ? recipe.cuisines.map(c => <span> {c} </span>) : "" } 
+          </span>
+          {/* <p className={'Subheader'}>{`${recipe.date}`}</p> */}
+        </div>
+
+      </div>
+      
+      <div className={"RedcipeCardTitle"}>
+        <div className={"RedcipeCardContent"}>
+       
+
+          <p className={'Header'}>{name.charAt(0).toUpperCase() + name.slice(1)}</p>
+          <div className={'Footer'}>
+            <span className={'Time'}><HourglassFullIcon/> {duration} min</span>
+            <span className={'Subheader'}>
+            <Link name={`${user.username}`} to={`/${user.username}`}>{`created by ${user.username.charAt(0).toUpperCase()+user.username.slice(1)}`}</Link>
+            </span>
+          </div>
+          
+          {/* <p className={'Subheader'}>{`${recipe.date}`}</p> */}
+        </div>
+      </div>
+      
+      {/* <CardHeader
         title={name.charAt(0).toUpperCase() + name.slice(1)}
         subheader={`${recipe.date}`}
         
-      />
+      /> */}
       {/* avatar={
             <Avatar aria-label="username" className={classes.avatar} >
               {`${user.username[0].toUpperCase()}`}
@@ -195,7 +252,7 @@ const RecipeCard = ({recipe}) => {
         {description}
         </Typography>
       </CardContent> */}
-      <CardActions disableSpacing>
+      {/* <CardActions disableSpacing>
       {
         currentUser ? renderLikeBtn() : ''
 
@@ -204,15 +261,16 @@ const RecipeCard = ({recipe}) => {
         { ratings.length > 0 ?  renderStars() : <StarBorderIcon/>} 
         </IconButton>
         <h5>{duration} min</h5>
-      </CardActions>
+      </CardActions> */}
      {/* <Link name={`${user.username}`} to={`/${user.username}`}>{`created by ${user.username}`}</Link> */}
      {/* <span>{likes.length} likes</span> */}
      {/* {
         currentUser ? renderLikeBtn() : ''
 
      } */}
-    {/* </div> */}
-    </Card>
+     {/* </Card> */}
+    </div>
+    
   )
 }
 

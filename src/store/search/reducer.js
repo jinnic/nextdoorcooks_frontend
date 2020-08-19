@@ -1,7 +1,7 @@
 
 const defaultState = {
   query: "",
-  sort: ""
+  sort: []
 }
 
 const reducer = (state = defaultState , action) =>{
@@ -21,12 +21,20 @@ const reducer = (state = defaultState , action) =>{
     case "SET_SORT":
     return{
        ...state,
-       sort: action.payload
+       sort: [
+         ...state.sort,
+         action.payload
+       ]
       }
+    case "REMOVE_SORT":
+    return{
+      ...state,
+      sort: state.sort.filter(s => s !== action.payload)
+    }
     case "RESET_SORT":
     return{
       ...state,
-       sort: ""
+       sort: []
     }
     default:
       return state
