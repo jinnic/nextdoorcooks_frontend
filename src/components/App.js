@@ -5,7 +5,7 @@ import SignUp from './SignUp'
 import Login from './Login'
 import NavBar from './NavBar'
 import Account from './Account'
-import Recipe from './Recipe/Recipe'
+import Recipe from './Recipe/RecipeTemp'
 import RecipeForm from './Recipe/RecipeForm'
 import RecipeContainer from './Recipe/RecipeContainer'
 import { getCurrentUser, getRecipes, getCurrentUserFollowees} from '../api/index'
@@ -37,7 +37,6 @@ const App =( props )=> {
   const isLoading = useSelector(state => state.user.isLoading)
   const recipes = useSelector(state => state.recipe.recipes)
   const followees = useSelector(state => state.user.followees)
-
   
   const query = useSelector(state => state.search.query)
   const filterByInput=(e)=>{

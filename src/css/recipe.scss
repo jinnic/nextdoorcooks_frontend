@@ -1,0 +1,244 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500&display=swap');
+
+$font-color: rgb(75, 75, 75);
+$mid-text: rgb(108, 108, 108);
+$subtext: gray;
+$placeholder: rgb(180, 179, 179);
+$form-line: #95989A;
+
+.RecipeBtn{
+  width: 300px;
+  margin-bottom: 1em;
+  .Btn{
+    border-radius: 30%;
+    width: 70px;
+    height: 35px;
+    border: 1px solid $mid-text;
+    border-radius: 18px;
+    font-size: 12pt;
+    background-color: white;
+    margin: 15px 0;
+    color: $mid-text;
+    margin-right: 10px;
+  }
+}
+
+.Recipe{
+  
+  font-family: 'Roboto';
+  display: grid;
+  grid-template-columns: 30% 55%;
+  grid-template-rows: auto;
+  grid-column-gap: 15%;
+  overflow: hidden;
+  // display: flex;
+  // flex-direction: row;
+  // position: relative;
+  .RecipeSubtitle{
+    font-size: 16pt;
+    text-align: left;
+    color: $mid-text;
+  }
+  img{
+    width: 100%;
+    height: 100%;
+  }
+  .Avatar{
+    color: $subtext;
+    line-height: 1em;
+    align-items: center;
+    display: flex;
+    margin-bottom: 1.5em;
+
+    img{
+      border-radius: 50%;
+      width: 36px;
+      margin-right: 1em;
+    }
+    a{
+      color: $subtext;
+      cursor: pointer;
+      margin:0;
+      
+    }
+    a:hover{
+      color:red;
+    }
+    svg{
+      margin-right: 0.3em;
+    }
+    label + span{
+      margin-left: 1em;
+    }
+    .Comment{
+      display: block;
+    }
+  } 
+  
+  .Right{
+   
+    flex-direction: row;
+    padding-right: 8px;
+    width: 100%;
+  }
+
+  // .Right > *{
+  //   max-width: 630px;
+  // }
+  .RatingBookmark{
+    position: relative;
+    width: 100%;
+    line-height: 1em;
+    
+    .Star{
+      display: flex;
+      align-items: center;
+      line-height: 1em;
+      h5{
+        display: inline-block;
+        color: $subtext;
+        margin-left: 1em;
+      }
+
+      svg{
+        margin-right: 0.3em;
+      }
+    }
+  }
+  .Left{
+    max-width: 350px;
+    flex-direction: row;
+  }
+  .Time{
+    display: flex;
+    align-items: center;
+    font-family: 'Roboto';
+    font-weight: 400;
+    // font-size: 16pt;
+    color: $mid-text;
+    margin-top: 9px;
+    margin-bottom: 1em;
+    color: $mid-text;
+    span{
+      margin-right: 1em;
+      line-height: 1em;
+    }
+  }
+  
+  p{
+    font-family: 'Playfair Display';
+    font-size: 1rem;
+    line-height: 1.5rem;
+    color: $font-color;
+    margin-top: 0;
+  }
+
+  h3{
+    font-family: 'Playfair Display';
+    font-size: 2.25em;
+    font-weight: 500;
+    color: $font-color;
+    margin-top: 0;
+  }
+
+  h4{
+    font-family: 'Roboto';
+    font-weight: 400;
+    // font-size: 16pt;
+    color: $mid-text;
+    margin-top: 18px;
+    margin-bottom: 1em;
+    color: $mid-text;
+  }
+  h5{
+    font-family: 'Roboto';
+    font-weight: 400;
+  }
+  /* LIKES */
+  .LikeBtn{
+    position: absolute !important;
+    z-index: 100;
+    right: -10px !important;
+    // top: -1.5em !important;
+    transform: scale(0.6);
+    background-color:white !important;
+    color: #dd6149 !important;
+    box-shadow: 0px 2px 4px -1px rgba(29, 29, 29, 0.2), 0px 4px 6px 0px rgba(75, 74, 74, 0.14), 0px 1px 7px 0px rgba(182, 176, 176, 0.12);
+    z-index: 500;
+
+    span{
+      transform: scale(1.4);
+    }
+  }
+  .RecipeUnderline{
+    display: inline-block;
+    border-bottom: 1px solid $mid-text;
+    margin-bottom: 1rem;
+    h4{
+      font-family: 'Roboto';
+      font-weight: 400;
+      color: $mid-text;
+      line-height: 1.8rem;
+      margin-top: 18px;
+      margin-bottom: 0em;
+      color: $mid-text;
+    }
+  }
+  ul, li{
+    list-style-type: none;
+    padding: 0;
+    padding-bottom: 0.5rem;
+    color: $font-color;
+  }
+  .InstructionsList{
+    max-width: 600px;
+    span{
+      margin-bottom: 0.5em;
+      display: inline-block;
+      color: $subtext;
+    }
+    li{
+      margin-bottom: 1em;
+      display: inline-block;
+      line-height: 1.5em;
+    }
+  }
+
+  .RaitingList{
+    width: 100%;
+    hr{
+      margin: 2em 0;
+      border-top: 1px solid$form-line;
+    }
+    input[type="text"]{
+      width: 250px;
+      margin:0 1em;
+      height: 2em;
+      cursor:pointer;
+      color: $mid-text;
+      // width: 100%;
+      border: 0;
+      border-bottom: $form-line 1px solid;
+    }
+    form{
+      // margin-left: 1em;
+    }
+
+    input[type="submit"]{
+      cursor:pointer;
+      color: $mid-text;
+      border-radius: 30%;
+      width: 80px;
+      height: 25px;
+      border: 1px solid $mid-text;
+      border-radius: 18px;
+      font-size: 0.8em;
+      background-color: white;
+    }
+    .Avatar{
+      margin-bottom: 0.5em;
+    }
+  }
+}

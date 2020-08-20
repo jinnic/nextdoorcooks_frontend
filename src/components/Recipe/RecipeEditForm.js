@@ -1,19 +1,23 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {UPDATE_RECIPE} from '../../store/recipe/types'
 import {updateRecipe} from '../../api'
+import {updateImageDisplay} from './File'
 
 
 const RecipeEditForm =({recipe, setEditRecipe})=> {
-  const {id, name, duration, description, ingredients, instructions, user, ratings, likes} = recipe
+  const {id, name, cuisines, duration, description, ingredients, instructions, items, user} = recipe
   const currentUser = useSelector(state=>state.user.currentUser)
   const dispatch = useDispatch()
+  const [nameFieldCounter,setNameCounter] = useState(name.length)
+
   const [infoState, setInfoState] = useState({
     id: id,
     name: name,
     duration: duration,
     description: description,
+    cuisines: cuisines
    })
 
   const [ingredState, setIngredients] = useState({
@@ -36,29 +40,6 @@ const RecipeEditForm =({recipe, setEditRecipe})=> {
       ]
     }))
   }
-
-  const selectIngredients = () =>{
-    return ingredState.ingredients.map((item, i) => {
-      return(
-        <option key={`ingredient_select_${i}`} value={item.name}>{item.name}</option>
-      )
-    })
-  }
-
-  const selectIngredientAmount = (name) =>{
-    // debugger
-    let ingrediant = ingredState.ingredients.find(ingred => ingred.name === name )
-    return <input
-              type="number"
-              name="amount"
-              value={0}
-              max={ingrediant.amount}
-              onChange={e=>handleInstruction(e)}
-            />
-    }
-  const renderIngredientAmount =(ingrediant)=>{
-    
-  }
   
   const handleInstruction = (e, i) =>{
     // console.log(e, i);
@@ -77,10 +58,6 @@ const RecipeEditForm =({recipe, setEditRecipe})=> {
       instructions[i][key] = e.target.value
       setInstructions({ instructions });
     }
-    
-
-    // debugger
-    // selectIngredientAmount()
   }
 
   
@@ -95,37 +72,48 @@ const RecipeEditForm =({recipe, setEditRecipe})=> {
     return instructState.instructions.map((item, i)=>{
       item.step = i+1
       return(
-        <div key={`instruction_${i}`}>
-          <h5>{`step ${item.step}`}</h5>
-          <label>instruction</label>
+        <div className={'Instruction'} key={`instruction_${i}`}>
+            <input
+              className={'RemoveBtn'}
+              type="button"
+              value="X"
+              onClick={()=>removeInstruction(i)}
+            />
+          <label >{`step ${item.step}`}</label>
           <textarea
+            rows="3"
             name="instruction"
             value={item.instruction}
             onChange={e=>handleInstruction(e,i)}
           />
-
-          <label>Ingredients</label>
-          <select name="ingredients" value={item.ingredients.name} onChange={e=>handleInstruction(e,i)}>
-            {selectIngredients()}
-          </select>
-          <input
-              type="button"
-              value="remove"
-              onClick={()=>removeInstruction(i)}
-            />
         </div>
       )
     })
   }
 
-  const measurements = ['n/a', 'teaspoon', 'tablespoon', 'oz', 'cup', 'lb']
-  
-
-
+  const measurements = ['n/a', 'drop','pinch', 'dash','teaspoon','tablespoon', 'ounce', 'pounds', 'cup', 'pint', 'quart', 'gallon']
+  const category_types = ['Sauce', 'Marinate', 'Main']
   const renderIngredient = () =>{
     return ingredState.ingredients.map((item, i)=> {
       return(
-        <div key={`ingredient_${i}`}>
+        <div className={'Ingrediant'} key={`ingredient_${i}`}>
+          <input
+            className={'RemoveBtn'}
+            type="button"
+            value="X"
+            onClick={()=>removeIngrediant(i)}
+          />
+          <label>Category</label>
+          <input
+            list="category_list"
+            name="category"
+            value={item.category}
+            onChange={e=>handleIngredient(e,i)}
+          />
+          <datalist id="category_list">
+            {category_types.map(category => <option value={category} key={category}/>)}
+          </datalist>
+
           <label>Name</label>
           <input
             type="text"
@@ -141,17 +129,13 @@ const RecipeEditForm =({recipe, setEditRecipe})=> {
             value={item.amount}
             onChange={e=>handleIngredient(e,i)}
           />
-
-          <label>Measurement</label>
-          <select name="measurement" value={item.measurement} onChange={e=>handleIngredient(e,i)}>
-            {renderMesurements()}
-            {/* {selectIngredientAmount()} */}
-          </select>
-          <input
-              type="button"
-              value="remove"
-              onClick={()=>removeIngrediant(i)}
-            />
+          <label>Measurement
+            <div >
+            <select  name="measurement" value={item.measurement} onChange={e=>handleIngredient(e,i)}>
+              {renderMesurements()}
+            </select>
+            </div>
+          </label>
         </div>
       )
     })
@@ -184,9 +168,9 @@ const RecipeEditForm =({recipe, setEditRecipe})=> {
         }
       ]
     }));
-    let instructions = [...instructState.instructions];
-    instructions[0]['ingredients'] = {...ingredState.ingredients[0]}
-    setInstructions({ instructions });
+    // let instructions = [...instructState.instructions];
+    // instructions[0]['ingredients'] = {...ingredState.ingredients[0]}
+    // setInstructions({ instructions });
   }
 
   const removeIngrediant =(i) =>{
@@ -199,19 +183,21 @@ const RecipeEditForm =({recipe, setEditRecipe})=> {
   
   
   const handleChange = (e, i)=> {
-    // debugger
-    if(e.target.name.split('_')[0] === 'instruction'){
-      // let key = e.target.name.split('_')[1]
-      // setInfoState({
-      //   ...state,
-      //   ingredients:[
-      //     ingredient:{
-      //       ...state.ingredient,
-      //       [key]: e.target.value
-      //     }
-      //   ],
-        
-      // })
+    if(e.target.name === 'name'){
+      setNameCounter(e.target.value.length)
+    }
+    
+    if(e.target.name ==='myCusine'){
+      setInfoState({
+        ...infoState,
+        cuisines: infoState.cuisines.map((val, index)=>{
+          if(index === i){
+            return e.target.value
+          }
+          return val
+        })
+      })
+      
     }else{
       setInfoState({
         ...infoState,
@@ -219,37 +205,146 @@ const RecipeEditForm =({recipe, setEditRecipe})=> {
       })
     }
     
-    // values[i].value = e.target.value;
-    // setFields(values);
-    console.log( e.target.name, e.target.value);
-    
   }
 
-  // const handleAdd = () => {
-  //   const values = [...fields];
-  //   values.push({ value: null });
-  //   setFields(values);
-  // }
-
-  // const handleRemove = (i) => {
-  //   const values = [...fields];
-  //   values.splice(i, 1);
-  //   setFields(values);
-  // }
+  /**FILE */
   
+  const [newFileState, setNewFileState] = useState({items: []})
+  const handleFileUpload = (e)=>{
+    const input = document.querySelector('#FileBtn');
+    const preview = document.querySelector('.FilePreview');
+    updateImageDisplay(preview,input)
+    
+    console.log(e.target.files)
+    e.persist()
+
+    //for multiple file
+    let  f = e.target.files
+    let items = []
+    Object.keys(f).forEach(i => items.push(f[i]))
+    console.log(items)
+    setNewFileState((prevState) => ({
+      ...prevState,
+      items: items
+    }))
+  }
+
+  //render existing images
+  const [fileState, setFileState] = useState({items: items})
+  useEffect(() => {
+    renderImageDisplay(fileState)
+  }, [fileState])
+
+
+  const renderImageDisplay=(fileState)=> {
+    const preview = document.querySelector('.FilePreview');
+  
+    const curFiles = fileState;
+    if(curFiles.length === 0) {
+      const para = document.createElement('p');
+      para.textContent = 'No files currently selected for upload';
+      preview.appendChild(para);
+    } else {
+      const para = document.createElement('p');
+      para.textContent = 'Previously uploaded Images/Videos';
+      preview.appendChild(para)
+
+      const list = document.createElement('ol');
+      preview.appendChild(list);
+      
+      for(const file of items) {
+        const listItem = document.createElement('li');
+        const para = document.createElement('p');
+        
+        para.textContent = `File name ${file.caption}`;
+        const image = document.createElement('img');
+        image.src = file.image
+
+        listItem.appendChild(image);
+        listItem.appendChild(para);  
+        list.appendChild(listItem);
+      }
+    }
+  }
+
+  /**CUISINE */
+  const cusine_types = ['African', 'American', 'British', 'Cajun', 'Caribbean',
+                        'Chinese', 'Eastern', 'European', 'French', 
+                        'German','Greek', 'Indian','Irish','Italian','Japanese',
+                        'Jewish','Korean','Latin American','Mediterranean',
+                        'Mexican','Middle Eastern','Nordic','Southern','Spanish',
+                        'Thai','Vietnamese']
+
+
+  const renderCusineOptions = ()=>{
+    
+    return infoState.cuisines.map((c, i)=>{
+      return (
+        <div className={'DataList'} key={`cusine_list_div_${i}`}>
+        <input list="cusine_list" placeholder="Chinese" name="myCusine" value={c} onChange={(e)=>handleChange(e, i)} key={`cusine_list_${i}`} />
+        <datalist id="cusine_list">
+         {cusine_types.map(cusine => <option value={cusine} key={cusine}/>)}
+        
+        </datalist>
+        
+        <input
+            className={'RemoveBtn'}
+            type="button"
+            value="X"
+            onClick={()=>removeCuisine(i)}
+          />
+        </div>
+      )
+    })
+  }
+  
+  const addCusine =()=>{
+    setInfoState((prevState) => ({
+      ...prevState,
+      cuisines: [
+        ...prevState.cuisines, 
+        ""
+      ]
+    }));
+  }
+  const removeCuisine =(i) =>{
+    console.log(i)
+    let newCusines = [...infoState.cuisines];
+    newCusines.splice(i, 1);
+    setInfoState({
+      ...infoState,
+      cuisines: newCusines
+    })
+  }
+
   const handleSubmit = e => {
     e.preventDefault()
-    // make a fetch request to edit the current user
+    const form = new FormData() 
+    newFileState.items.forEach((item,i) => {
+      form.append(`items[${i}]`, item)
+    })
+    form.append("imageable_type", "Recipe")
+    form.append("imageable_id", recipe.id)
+    form.append("user_id", currentUser.id)
     
+    fetch("http://localhost:3000/items", {
+            method: "POST",
+            body: form
+          })
+            .then(r => r.json())
+            .then(recipe => dispatch({type: UPDATE_RECIPE, payload: recipe}))
+
     const updatedRecipe = {
       ...infoState,
       ...ingredState,
       ...instructState,
       user_id: currentUser.id
     }
-    console.log('original recipe :', recipe)
-    console.log('updated recipe : ', updatedRecipe)
-    // debugger
+
+    // console.log('original recipe :', recipe)
+    // console.log('updated recipe : ', updatedRecipe)
+    // form.append("recipe", JSON.stringify(updatedRecipe))
+    
     updateRecipe(updatedRecipe)
       .then(recipe => dispatch({type: UPDATE_RECIPE, payload: recipe}))
       //recipe => dispatch({type: UPDATE_RECIPE, payload: recipe})
@@ -258,45 +353,96 @@ const RecipeEditForm =({recipe, setEditRecipe})=> {
   }
   
     return (
-      <form onSubmit={handleSubmit}>
-        <h1>ADD NEW RECIPE</h1>
-
-        <label>Name</label>
+      <form className={'RecipeForm'} onSubmit={handleSubmit}>
+      
+        <h1>Edit your recipe</h1>
+        <h5>Recipe Info</h5>
+      <div className={'RecipeInfo'}>
+        <label htmlFor='name'>Name Your Recipe*</label>
         <input
           type="text"
           name="name"
           autoComplete="off"
-          value={name}
+          placeholder="Chicken fried rice"
+          value={infoState.name}
           onChange={handleChange}
         />
-  <br/>      
-        <label>Duration in MIN</label>
+        <span>{nameFieldCounter}/40</span>
+        {/* <label>Portion Type</label>
+        <input
+          type="text"
+          name="portion"
+          autoComplete="off"
+          value={name}
+          onChange={handleChange}
+        /> */}
+        <label>Cuisine type (max 3)*
+          {renderCusineOptions()}
+          { infoState.cuisines.length <= 2 ?
+        <input 
+          className={'Btn'}
+          type="button" 
+          value="Add a Cusine" 
+          onClick={addCusine} />
+        :
+        <>
+          <input className={'Btn'} type="button" value="add cusine" onClick={addCusine} disabled/>
+          <span>you've reached maximum number</span>
+        </>
+         }
+        </label>
+          
+        <label>Time needed*</label>
         <input
           type="number"
           name="duration"
-          value={duration}
+          value={infoState.duration}
           onChange={handleChange}
         />
-  <br/>
+    
         <label>Description</label>
         <textarea
+          rows="3"
           name="description"
-          value={description}
+          value={infoState.description}
           onChange={handleChange}
         />
-  <br/>
+    
+      </div>
+      
+        
         <h5>Ingredients</h5>
-        <br/>
+          
         {renderIngredient()}
-        <input type="button" value="add ingrediant" onClick={addIngredient} />
-  <br/>
-  <br/>
-        <label>Instructions</label>
+        <input 
+          className={'Btn'}
+          type="button" 
+          value="Add an Ingrediant"
+          onClick={addIngredient} />
+    
+    
+        <h5>Instructions</h5>
         {renderInstruction()}
-        <input type="button" value="add instructions" onClick={addInstructions} />
-
-  <br/>
-        <input type="submit" value="Update" />
+          <input 
+            className={'Btn'}
+            type="button" 
+            value="Add an Instruction" 
+            onClick={addInstructions} />
+    
+  
+        <h5>Images and Videos</h5>
+        <label className={'FileLabel'}>Choose Images or Videos</label>
+        <input 
+            id={'FileBtn'}
+            type="file" 
+            name="file"
+            onChange={handleFileUpload}
+            accept="image/*, video/*" 
+            multiple />
+        <div className="FilePreview">
+          {/* <p>No files currently selected for upload</p> */}
+        </div>
+        <input className={'SubmitBtn'} type="submit" value="Done" />
       </form>
     )
 }

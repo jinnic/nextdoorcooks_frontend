@@ -25,6 +25,10 @@ export const updateImageDisplay=(preview,input)=>{
     para.textContent = 'No files currently selected for upload';
     preview.appendChild(para);
   } else {
+    const para1 = document.createElement('p');
+    para1.textContent = 'Newly uploaded Images/Videos';
+    preview.appendChild(para1)
+    
     const list = document.createElement('ol');
     preview.appendChild(list);
 
@@ -32,7 +36,7 @@ export const updateImageDisplay=(preview,input)=>{
       const listItem = document.createElement('li');
       const para = document.createElement('p');
       if(validFileType(file)) {
-        para.textContent = `File name ${file.name}, file size ${returnFileSize(file.size)}.`;
+        para.textContent = `File name: ${file.name}.`; //, file size ${returnFileSize(file.size)}
         const image = document.createElement('img');
         image.src = URL.createObjectURL(file);
 

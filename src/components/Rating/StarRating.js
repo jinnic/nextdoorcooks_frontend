@@ -24,7 +24,7 @@ const StarRating = ({rating, handleStarClick}) =>{
                 <FaStar 
                   className='star' 
                   color={ratingValue <= (hover || rating) ? activeColor : inactiveColor} 
-                  size={30}
+                  size={20}
                   onMouseEnter={()=> setHover(ratingValue)}
                   onMouseLeave={()=> setHover(null)}
                   /> 
@@ -32,7 +32,7 @@ const StarRating = ({rating, handleStarClick}) =>{
             )
           })
         }
-        <span>rating is {rating}</span>
+        {/* <span>you've rated {rating}</span> */}
       </div>
   )
 }

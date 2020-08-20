@@ -7,11 +7,11 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 const NavBar = ({ currentUser, handleLogout, reSetQuery, query, filterByInput, filterByCusines, removeFilter }) => {
-  const [showFilter, setShowFilter] = useState(true)
+  
   const [anchorEl, setAnchorEl] = useState(null);
-  const path = useLocation().pathname
-
-  // if(path === "/home" || path === "/" || path === "/recipes"){
+  // const path = useLocation().pathname
+  // const [showFilter, setShowFilter] = useState(true)
+  // if(path === "/home" || path === "/"){
   //   setShowFilter(true)
   // }else{
   //   setShowFilter(false)
@@ -74,7 +74,7 @@ const NavBar = ({ currentUser, handleLogout, reSetQuery, query, filterByInput, f
         </div>
       </div>
       <Filter className={'Filter'} query={query} handleSetQuery={filterByInput} handleSetSort={filterByCusines} removeFilter={removeFilter} />
-      {/* { showFilter ? <Filter className={'Filter'} query={query} handleSetQuery={filterByInput} handleSetSort={filterByCusines} removeFilter={removeFilter} /> : ''} */}
+      {/* showFilter ? <Filter className={'Filter'} query={query} handleSetQuery={filterByInput} handleSetSort={filterByCusines} removeFilter={removeFilter} /> : ''} */}
     </header>
   )
 }

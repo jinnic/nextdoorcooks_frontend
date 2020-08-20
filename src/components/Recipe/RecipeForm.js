@@ -3,10 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import {ADD_RECIPE, IS_FETCHING} from '../../store/recipe/types'
-import {addRecipe} from '../../api'
 import {updateImageDisplay} from './File'
 
-const RecipeForm =(props)=> {
+const RecipeForm =()=> {
   const currentUser = useSelector(state=>state.user.currentUser)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -56,29 +55,6 @@ const RecipeForm =(props)=> {
     }))
   }
 
-  const selectIngredients = () =>{
-    return ingredState.ingredients.map((item, i) => {
-      return(
-        <option key={`ingredient_select_${i}`} value={item.name}>{item.name}</option>
-      )
-    })
-  }
-
-  const selectIngredientAmount = (name) =>{
-    // debugger
-    let ingrediant = ingredState.ingredients.find(ingred => ingred.name === name )
-    return <input
-              type="number"
-              name="amount"
-              value={0}
-              max={ingrediant.amount}
-              onChange={e=>handleInstruction(e)}
-            />
-    }
-  const renderIngredientAmount =(ingrediant)=>{
-    
-  }
-  
   const handleInstruction = (e, i) =>{
     // console.log(e, i);
     
@@ -96,10 +72,7 @@ const RecipeForm =(props)=> {
       instructions[i][key] = e.target.value
       setInstructions({ instructions });
     }
-    
 
-    // debugger
-    // selectIngredientAmount()
   }
 
   
@@ -115,7 +88,6 @@ const RecipeForm =(props)=> {
       item.step = i+1
       return(
         <div className={'Instruction'} key={`instruction_${i}`}>
-          {/* <h5>{`step ${item.step}`}</h5> */}
             <input
               className={'RemoveBtn'}
               type="button"
@@ -129,11 +101,6 @@ const RecipeForm =(props)=> {
             value={item.instruction}
             onChange={e=>handleInstruction(e,i)}
           />
-
-          {/* <label>Ingredients</label>
-          <select name="ingredients" value={item.ingredients.name} onChange={e=>handleInstruction(e,i)} multiple>
-            {selectIngredients()}
-          </select> */}
         </div>
       )
     })
@@ -180,7 +147,6 @@ const RecipeForm =(props)=> {
             <div >
             <select  name="measurement" value={item.measurement} onChange={e=>handleIngredient(e,i)}>
               {renderMesurements()}
-              {/* {selectIngredientAmount()} */}
             </select>
             </div>
           </label>
@@ -218,9 +184,9 @@ const RecipeForm =(props)=> {
         }
       ]
     }));
-    let instructions = [...instructState.instructions];
-    instructions[0]['ingredients'] = {...ingredState.ingredients[0]}
-    setInstructions({ instructions });
+    // let instructions = [...instructState.instructions];
+    // instructions[0]['ingredients'] = {...ingredState.ingredients[0]}
+    // setInstructions({ instructions });
   }
 
   const removeIngrediant =(i) =>{
@@ -232,22 +198,11 @@ const RecipeForm =(props)=> {
   
   const [nameFieldCounter,setNameCounter] = useState(0)
   const handleChange = (e, i)=> {
-    // debugger
     if(e.target.name === 'name'){
       setNameCounter(e.target.value.length)
     }
-    if(e.target.name.split('_')[0] === 'instruction'){
-      // let key = e.target.name.split('_')[1]
-      // setInfoState({
-      //   ...state,
-      //   ingredients:[
-      //     ingredient:{
-      //       ...state.ingredient,
-      //       [key]: e.target.value
-      //     }
-      //   ],
-      // })
-    }else if(e.target.name ==='myCusine'){
+    
+    if(e.target.name ==='myCusine'){
       setInfoState({
         ...infoState,
         cuisines: infoState.cuisines.map((val, index)=>{
@@ -264,43 +219,24 @@ const RecipeForm =(props)=> {
         [e.target.name]: e.target.value
       })
     }
-    
-    // values[i].value = e.target.value;
-    // setFields(values);
-    console.log( e.target.name, e.target.value);
-    
   }
-
-  // const handleAdd = () => {
-  //   const values = [...fields];
-  //   values.push({ value: null });
-  //   setFields(values);
-  // }
-
-  // const handleRemove = (i) => {
-  //   const values = [...fields];
-  //   values.splice(i, 1);
-  //   setFields(values);
-  // }
-  // 
-
 
   const handleSubmit = e => {
     e.preventDefault()
-    const form = new FormData()
+
+    const form = new FormData() 
     fileState.items.forEach((item,i) => {
       form.append(`items[${i}]`, item)
     })
     form.append("imageable_type", "Recipe")
-    // make a fetch request to edit the current user
     const recipe = {
       ...infoState,
       ...ingredState,
       ...instructState,
       user_id: currentUser.id
     }
-    debugger
-    console.log(recipe)
+    // debugger
+    // console.log(recipe)
     form.append("recipe", JSON.stringify(recipe))
    
     // debugger
@@ -315,35 +251,13 @@ const RecipeForm =(props)=> {
             .then(r => r.json())
             .then(data => dispatch({type: ADD_RECIPE, payload: data}))
             history.push(`/${currentUser.username}`)
-    
-    
-    /*const form = new FormData()
-    fileState.items.forEach((item,i) => {
-      form.append(`items[${i}]`, item)
-    })
-    form.append("imageable_type", "Recipe")
-    // make a fetch request to edit the current user
-    const recipe = {
-      ...infoState,
-      ...ingredState,
-      ...instructState,
-      user_id: currentUser.id
-    }
-
-    form.append("recipe", JSON.stringify(recipe))
-   
-    // debugger
-    addRecipe(form)
-      .then(recipe => dispatch({type: ADD_RECIPE, payload: recipe}))
-    console.log("want to redirect : ", props)
-    history.push(`/${currentUser.username}`)*/
   }
 
-  //could be array
   const [fileState, setFileState] = useState({
     items: [],
     caption: ""
    })
+   
   const handleFileUpload = (e)=>{
     const input = document.querySelector('#FileBtn');
     const preview = document.querySelector('.FilePreview');
@@ -361,25 +275,8 @@ const RecipeForm =(props)=> {
       ...prevState,
       items: items
     }))
-    // let  items = e.target.files[0]
-    // setFileState((prevState) => ({
-    //     ...prevState,
-    //     items: items
-    //   }))
-
-    
-    // console.log("items : ", items)
-    // debugger
-    // e.target.files.map(file => {
-    //   return({
-    //     [file.type.split('/')[0]] : e.target.files[0]
-    //   })
-      
-    // })
-
-    
-    // [e.target.files[0].type.split('/')[0]] : e.target.files[0]
   }
+
   const cusine_types = ['African', 'American', 'British', 'Cajun', 'Caribbean',
                         'Chinese', 'Eastern', 'European', 'French', 
                         'German','Greek', 'Indian','Irish','Italian','Japanese',
@@ -437,7 +334,7 @@ const RecipeForm =(props)=> {
         <h1>Add a recipe</h1>
         <h5>Recipe Info</h5>
       <div className={'RecipeInfo'}>
-        <label for='name'>Name Your Recipe*</label>
+        <label htmlFor='name'>Name Your Recipe*</label>
         <input
           type="text"
           name="name"
@@ -521,23 +418,6 @@ const RecipeForm =(props)=> {
         <div className="FilePreview">
           <p>No files currently selected for upload</p>
         </div>
-        {/* <label>Video Upload
-          <input type="file" name="video" onChange={handleFileUpload} />
-        </label>
-            
-        <label htmlFor="caption">
-          Caption
-          <input type="text" name="caption" />
-        </label> */}
-        {/* <label htmlFor="caption">
-        Caption
-        <input type="text" name="caption" />
-        </label>
-        <label htmlFor="image" >
-        Upload image
-        <input type="file" name="image" accept="image/*" />
-        </label> */}
-    
         <input className={'SubmitBtn'} type="submit" value="Done" />
       </form>
     )

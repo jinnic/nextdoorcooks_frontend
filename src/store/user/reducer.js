@@ -38,8 +38,9 @@ const reducer = (state = defaultState , action) =>{
     case SET_USERS:
       return {
         ...state,
-        users: action.payload,
-        isLoading: false
+        isLoading: false,
+        users: action.payload
+
       }
     case ADD_TO_USERS:
     return{

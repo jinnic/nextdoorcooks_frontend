@@ -4,19 +4,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { addLike, removeLike } from '../../api'
 import { averageRatings } from '../Rating/index'
 import { UPDATE_RECIPE } from '../../store/recipe/types'
-import Card from '@material-ui/core/Card'
-import clsx from 'clsx';
+
 import { makeStyles } from '@material-ui/core/styles'
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import IconButton from '@material-ui/core/IconButton';
+
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Fab from '@material-ui/core/Fab';
