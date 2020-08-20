@@ -6,10 +6,8 @@ import {deleteRecipe, addLike, removeLike, addRating, updateRating } from '../..
 import {DELETE_RECIPE, UPDATE_RECIPE} from '../../store/recipe/types'
 import StarRating from '../Rating/StarRating'
 import { averageRatings } from '../Rating/index'
-import { FaStar } from 'react-icons/fa'
 
 import Fab from '@material-ui/core/Fab';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import { makeStyles } from '@material-ui/core/styles'
@@ -33,7 +31,6 @@ const Recipe = () => {
   const dispatch = useDispatch()
   const currentUser = useSelector(state => state.user.currentUser)
   const recipes = useSelector(state => state.recipe.recipes)
-  const users = useSelector(state => state.user.users)
   const [editRecipe,setEditRecipe] = useState(false)
   
   const location = useLocation()
@@ -56,17 +53,7 @@ const Recipe = () => {
 
   const renderIngredients =()=>{
     if(ingredients !== undefined){
-      const categories = [...new Set(ingredients.map(i => i.category))]
-      let a = {}
-      for(let i = 0; i < categories.length; i++){
-        var c = categories[i]
-        a[c]=ingredients.filter(i => i.category === c)
-      }
-      // debugger
-      categories.forEach(c => ingredients.map(i => i.category === c))
-      // debugger
       return ingredients.map( i => {
-
         let mesurement = ""
         if (i.measurement !== 'n/a' ){
           mesurement = i.measurement
@@ -78,37 +65,14 @@ const Recipe = () => {
 
   const renderInstructions = ()=>{
     if(instructions !== undefined){
-      return instructions.map( i => <><span>Step {i.step}</span><li key={i.instruction}>{i.instruction}</li></>)
+      return instructions.map( i => <li key={i.instruction}>{i.instruction}</li>)
     }
-  }
-
-  const renderCommentStars =(rate)=>{
-    
-    const [activeColor, inactiveColor] = ["#ffc107","#e4e5e9"]
-    let stars= [<FaStar key={`r_star_1`} color={inactiveColor} size={20}/> ,<FaStar key={`r_star_2`} color={inactiveColor} size={20}/> ,<FaStar key={`r_star_3`} color={inactiveColor} size={20}/> ,<FaStar key={`r_star_4`} color={inactiveColor} size={20}/> ,<FaStar key={`r_star_5`} color={inactiveColor} size={20}/> ]
-    return stars.map((star, i) =>{
-      let count = i+1
-      if(count <= rate){
-        return <FaStar ckey={`r_star_${i}`} color={activeColor} size={20}/> 
-      }
-      return star
-    })
   }
 
   const renderComments = ()=>{
     if(ratings !== null ){
        let comments = ratings.filter( r => r.comment !== null && r.comment !== "")
-       
-       return comments.map(r => {
-         let [commentUser] = users.filter(u=> u.id=== r.user_id)
-        return(  <li key={r.comment}>
-            <div className={'Avatar'}>
-              <img src={ commentUser.avatar} alt="Avatar"/> 
-              {renderCommentStars(r.stars)}
-              <span className={'Comment'}>{r.comment}</span>
-            </div>
-          </li>)
-        })
+       return comments.map(c => <li key={c.comment}>{c.comment}</li>)
     }
   }
 
@@ -121,13 +85,13 @@ const Recipe = () => {
       deleteRecipe(recipe)
       .then( r => dispatch({type: DELETE_RECIPE, payload: r}))
       history.goBack()
-    }else if(e.currentTarget.tagName === 'BUTTON'){
+    }else if(e.target.name === 'like'){
       const likeObj = {
         user_id: currentUser.id,
         likeable_type: "Recipe",
         likeable_id: recipe.id
       }
-      if (e.currentTarget.name === "unlike"){
+      if (e.currentTarget.innerText === "♡"){
         addLike(likeObj)
           .then(recipe => dispatch({type: UPDATE_RECIPE, payload: recipe}))
       }else{
@@ -152,19 +116,7 @@ const Recipe = () => {
       }
     } 
   }, [])
- 
-  const renderStars =()=>{
-    const [activeColor, inactiveColor] = ["#ffc107","#e4e5e9"]
-    const avg = averageRatings(ratings)
-    let stars= [<FaStar key={`r_star_1`} color={inactiveColor} size={20}/> ,<FaStar key={`r_star_2`} color={inactiveColor} size={20}/> ,<FaStar key={`r_star_3`} color={inactiveColor} size={20}/> ,<FaStar key={`r_star_4`} color={inactiveColor} size={20}/> ,<FaStar key={`r_star_5`} color={inactiveColor} size={20}/> ]
-    return stars.map((star, i) =>{
-      let count = i+1
-      if(count <= avg){
-        return <FaStar key={`r_star_${i}`} color={activeColor} size={20}/> 
-      }
-      return star
-    })
-  }
+
   const handleStarClick = (value) =>{
     setRating(value)
 
@@ -234,70 +186,57 @@ const Recipe = () => {
 
   console.log(rating.comment)
   return (
-    <>
+    <div className={'Recipe'}>
       {editRecipe ?     <RecipeEditForm recipe={recipe} setEditRecipe={setEditRecipe}/> :
           <>
           {
             currentUser.id === user.id ? 
             <div className={'RecipeBtn'}>
               <div>
-                <button className={'Btn'}  name={'back'} onClick={handleClick}>back </button>
                 <button className={'Btn'} name={'edit'} onClick={handleClick}>edit </button>
                 <button className={'Btn'}  name={'delete'} onClick={handleClick}>delete </button>
+                <button className={'Btn'}  name={'back'} onClick={handleClick}>back </button>
               </div>  
+              { 
+                haveLikes() ? 
+                <Fab className={classes.fab}  aria-label="add to favorites" onClick={handleClick} name="like" className={'LikeBtn'}>
+                  <BookmarkIcon />
+                </Fab>
+                :
+                <Fab className={classes.fab} aria-label="add to favorites" onClick={handleClick} name="unlike" className={'LikeBtn'}>
+                <BookmarkBorderIcon/>
+                </Fab>
+              }
             </div> 
 
             : 
 
-            <div className={'RecipeBtn'}>
-              <button className={'Btn'}  name={'back'} onClick={handleClick}>back </button>
+            <div className={'Row'}>
+              <button name={'back'} onClick={handleClick}>back</button>
+              { 
+                haveLikes() ? 
+                <div>
+                    <span>{likes.length}</span>
+                    <button name='like' className={'LikeBtn'} onClick={handleClick}>♥︎</button> 
+                </div>
+                : 
+                <div>
+                    <span>{likes.length}</span>
+                    <button name='like' className={'LikeBtn'} onClick={handleClick}>♡</button>
+                </div>
+              }
             </div>
           } 
-          <div className={'Recipe'}>
-           <div className={'Left'}>
-              <div className={'Time'}>
-              <span ><AccessTimeIcon /></span>
-              <span>{duration} min</span>
-              <span>|</span>
-              <span>  {ingredients.length} ingredients</span>
-              </div>
-              <p>{description}</p>
 
-              <div className={'RecipeUnderline'}>
-                <h4>Ingredients</h4>
-              </div>
-              <div className={'IngredientsList'}>
-                <ul>
-                  {renderIngredients()}
-                </ul>
-              </div>
-              
-
-           </div>
-          {/* end of left */}
-
-           <div className={'Right'}>
-            <h3>{name}</h3>
-            <div className={'Avatar'}><img src={ user.avatar} alt="Avatar"/> <a href={`http://localhost:3001/${user.username}`}>{`- by ${user.username}`}</a></div>
-            <div className={'RatingBookmark'}>
-            <div className={'Star'}>
-              {renderStars()}
-              <h5>{ratings.length} rated</h5>
-            </div>
-              
-              
-              { 
-                  haveLikes() ? 
-                  <Fab className={classes.fab}  aria-label="add to favorites" onClick={handleClick} name="like" className={'LikeBtn'}>
-                    <BookmarkIcon />
-                  </Fab>
-                  :
-                  <Fab className={classes.fab} aria-label="add to favorites" onClick={handleClick} name="unlike" className={'LikeBtn'}>
-                  <BookmarkBorderIcon/>
-                  </Fab>
-                }
-            </div>
             
+            <div className={'Right'}>
+              <div className={'Info'}>
+                <h3>{name}</h3>
+                <h5>{`created by ${user.username}`}</h5>
+                <h1>{ingredients.length} ingredients | {duration} min</h1>
+                <h5>Description</h5>
+                <p>{description}</p>
+              </div>
               <div className={'Image'}>
               {recipe.items.length > 0 ? 
                 renderImages()
@@ -306,38 +245,45 @@ const Recipe = () => {
 
               }
               </div>
-              <div className={'RecipeUnderline'}>
-                  <h4>Directions</h4>
+            </div>
+
+            <div className={'Row'}>
+              <div className={'IngredientsList'}>
+                <h5>ingredients</h5>
+                <ul>
+                  {renderIngredients()}
+                </ul>
               </div>
+            </div>
+
+            <div className={'Row'}>
               <div className={'InstructionsList'}>
-                  <ul>
-                  {renderInstructions()}
-                  </ul>
+              <h5>Instructions</h5>
+                <ul>
+                {renderInstructions()}
+                </ul>
               </div>
-              
-              <div className={'Row'}>
-                <div className={'RaitingList'}>
-                  <div className={'Avatar'}>
-                    <img src={ user.avatar} alt="Avatar"/>
-                    <StarRating rating={newRating} handleStarClick={handleStarClick}/>
-                    <form onSubmit={handleSubmit}>
-                      <input type="text" name="comment" value={newComment} onChange={handleChange}/>
-                      <input type="submit" value="Comment" />
-                    </form>
-                  </div>
-                  
-                  <hr class="solid"></hr>
-                  <ul>
-                  {renderComments()}
-                  </ul>
-                </div>
+            </div>
+
+            <div className={'Row'}>
+              <div className={'RaitingList'}>
+              <h5>Ratings : {averageRatings(ratings)} ⭐</h5>
+              <StarRating rating={newRating} handleStarClick={handleStarClick}/>
+              <form onSubmit={handleSubmit}>
+                <label>
+                  comment:
+                  <input type="text" name="comment" value={newComment} onChange={handleChange}/>
+                </label>
+                <input type="submit" value="Submit" />
+              </form>
+              <ul>
+              {renderComments()}
+              </ul>
               </div>
-           </div>
-           {/* end of Right */}
-           </div>
+            </div>
           </>
         }
-    </>
+    </div>
   )
 }
 

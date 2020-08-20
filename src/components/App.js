@@ -5,7 +5,7 @@ import SignUp from './SignUp'
 import Login from './Login'
 import NavBar from './NavBar'
 import Account from './Account'
-import Recipe from './Recipe/RecipeTemp'
+import Recipe from './Recipe/Recipe'
 import RecipeForm from './Recipe/RecipeForm'
 import RecipeContainer from './Recipe/RecipeContainer'
 import { getCurrentUser, getRecipes, getCurrentUserFollowees} from '../api/index'
@@ -207,16 +207,15 @@ const App =( props )=> {
               {currentUser ? <RecipeForm /> : <Redirect to='/' />}
             </Route>
             <Route path="/recipes/saved">
-              {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
-              <h2>Recipes</h2>  
+              {currentUser ? <div className={'Row'}><h1 >Bookmarked Recipes</h1></div> : <Redirect to='/' />}
+              {/* <h2>Recipes</h2>   */}
               {searchResults && searchResults.length ? <RecipeContainer recipes={searchResults} />:""}
             </Route>
             <Route path={`/recipes/:id/:slug`}>
               {currentUser ? <Recipe /> : <Redirect to='/' />}
             </Route>
             <Route  exact path="/recipes" >
-              {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
-              <h2>Recipes</h2>  
+              {currentUser ? <h2>Recipes</h2> : <Redirect to='/' />}
               {searchResults && searchResults.length ? <RecipeContainer recipes={searchResults} />:""}
                   {/* <RecipeContainer recipes={[]} /> */}
             </Route>
@@ -226,9 +225,9 @@ const App =( props )=> {
             </Route>
             <Route exact path="/home" >
               {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
-              <h2>Recipes</h2>  
+              {/* <h2>Recipes</h2>   */}
               {searchResults && searchResults.length ? <RecipeContainer recipes={searchResults} />:""}
-              <h2>Experiances</h2> 
+              {/* <h2>Experiances</h2>  */}
                   {/* <RecipeContainer recipes={[]} /> */}
             </Route>
             <Route path='/:slug'> 

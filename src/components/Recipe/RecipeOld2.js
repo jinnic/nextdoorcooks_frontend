@@ -7,12 +7,15 @@ import { UPDATE_RECIPE } from '../../store/recipe/types'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { red } from '@material-ui/core/colors';
+import IconButton from '@material-ui/core/IconButton';
 
-import { FaStar } from 'react-icons/fa'
+import StarIcon from '@material-ui/icons/Star';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Fab from '@material-ui/core/Fab';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
-
+import HourglassFullIcon from '@material-ui/icons/HourglassFull';
+import FlareIcon from '@material-ui/icons/Flare';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -134,21 +137,35 @@ const RecipeCard = ({recipe}) => {
     //debugger
     
   }
-
-  const renderStars =()=>{
-    const [activeColor, inactiveColor] = ["#ffc107","#e4e5e9"]
-    const avg = averageRatings(ratings)
-    let stars= [<FaStar key={`r_star_1`} color={inactiveColor} size={20}/> ,<FaStar key={`r_star_2`} color={inactiveColor} size={20}/> ,<FaStar key={`r_star_3`} color={inactiveColor} size={20}/> ,<FaStar key={`r_star_4`} color={inactiveColor} size={20}/> ,<FaStar key={`r_star_5`} color={inactiveColor} size={20}/> ]
-    return stars.map((star, i) =>{
-      let count = i+1
-      if(count <= avg){
-        return <FaStar key={`r_star_${i}`} color={activeColor} size={20}/> 
-      }
-      return star
-    })
+        {/* <button className={'LikeBtn'} onClick={handleClick}>♥︎</button>  */}
+        {/* <button className={'LikeBtn'} onClick={handleClick}>♡</button> */}
+  const renderLikeBtn =()=>{
+    return haveLikes() ? 
+        <IconButton aria-label="add to favorites" onClick={handleClick} name="like" >
+          <BookmarkIcon /><span> {likes.length}</span>
+        </IconButton>
+        :
+        <IconButton aria-label="remove favorites" onClick={handleClick} name="unlike">
+          <BookmarkBorderIcon/><span> {likes.length}</span>
+        </IconButton>
+        
   }
 
+  const renderStars =()=>{
+    let stars = [<StarBorderIcon/>,<StarBorderIcon/>,<StarBorderIcon/>,<StarBorderIcon/>,<StarBorderIcon/>]
+    return stars.map((s,i)=>{
+      if(i < averageRatings(ratings)){
+        debugger
+        return <StarIcon key={`star_${i}`} />
+      }
+      return <StarBorderIcon key={`star_${i}`} />
+    })
+  }
+  // if (user) return <h1>USER IS HERE</h1>
+
+  //debugger
   return (
+    // <Card key={recipe.name} className={classes.root} onClick={handleClick}>
     <div key={recipe.name} className={"RecipeCard"} onClick={handleClick}> 
      
       { (recipe.items.length > 0) ?
@@ -167,29 +184,83 @@ const RecipeCard = ({recipe}) => {
           src={`${recipe.items[0].image}`}
         />
       </div>
+      {/* <CardMedia
+        className={classes.media}
+        image={`${recipe.items[0].image}`}
+      /> */}
       </>
       :
       <img
         className={'RecipeCardImage'}
       />
       }
-      <div className={"RedcipeCardTitle"}>
-          <p className={'Header'}>{name.charAt(0).toUpperCase() + name.slice(1)}</p>
-          <span className={'Subheader'}>
-            <Link name={`${user.username}`} to={`/${user.username}`}>{`- by ${user.username.charAt(0).toUpperCase()+user.username.slice(1)}`}</Link>
-            </span>
-      </div>
-      <div className={'Cuisines'}>
+      <div className={"RecipeCardSubTitle"}>
+        <div className={"RedcipeCardContent"}>
+          <span className={'Rating'}>
+            { ratings.length > 0 ?  <><StarIcon/><span>{averageRatings(ratings)}({ratings.length})</span></> : <><FlareIcon/><span>{'(new)'}</span></>} 
+          </span>
+          <span className={'Cuisines'}>
             { ( recipe.cuisines.length > 0) ? recipe.cuisines.map(c => <span> {c} </span>) : "" } 
+          </span>
+          {/* <p className={'Subheader'}>{`${recipe.date}`}</p> */}
+        </div>
+
+      </div>
+      
+      <div className={"RedcipeCardTitle"}>
+        <div className={"RedcipeCardContent"}>
+       
+
+          <p className={'Header'}>{name.charAt(0).toUpperCase() + name.slice(1)}</p>
+          <div className={'Footer'}>
+            <span className={'Time'}><HourglassFullIcon/> {duration} min</span>
+            <span className={'Subheader'}>
+            <Link name={`${user.username}`} to={`/${user.username}`}>{`created by ${user.username.charAt(0).toUpperCase()+user.username.slice(1)}`}</Link>
+            </span>
           </div>
-      <div className={'Star'}>
-          {renderStars()}
-          <h5>{ratings.length} ratings</h5>
-      </div>
-      <div className={"RecipeTag"}>
           
-          
+          {/* <p className={'Subheader'}>{`${recipe.date}`}</p> */}
+        </div>
       </div>
+      
+      {/* <CardHeader
+        title={name.charAt(0).toUpperCase() + name.slice(1)}
+        subheader={`${recipe.date}`}
+        
+      /> */}
+      {/* avatar={
+            <Avatar aria-label="username" className={classes.avatar} >
+              {`${user.username[0].toUpperCase()}`}
+            </Avatar>
+        } */}
+    {/* <div className={"RecipeCard"} onClick={handleClick}> */}
+     {/* <h4>{name.charAt(0).toUpperCase() + name.slice(1)}</h4> */}
+     {/* <h5>Ratings : { ratings === undefined ? 0 : averageRatings(ratings)} ⭐</h5> */}
+     {/* <h5>duration : {duration} min</h5> */}
+     {/* <p> {description}</p> */}
+
+     {/* <CardContent>
+        <Typography variant="body2" color="textSecondary" component="p" noWrap>
+        {description}
+        </Typography>
+      </CardContent> */}
+      {/* <CardActions disableSpacing>
+      {
+        currentUser ? renderLikeBtn() : ''
+
+     }
+        <IconButton aria-label="ratings" >
+        { ratings.length > 0 ?  renderStars() : <StarBorderIcon/>} 
+        </IconButton>
+        <h5>{duration} min</h5>
+      </CardActions> */}
+     {/* <Link name={`${user.username}`} to={`/${user.username}`}>{`created by ${user.username}`}</Link> */}
+     {/* <span>{likes.length} likes</span> */}
+     {/* {
+        currentUser ? renderLikeBtn() : ''
+
+     } */}
+     {/* </Card> */}
     </div>
     
   )

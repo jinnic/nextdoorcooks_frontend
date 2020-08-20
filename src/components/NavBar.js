@@ -32,10 +32,10 @@ const NavBar = ({ currentUser, handleLogout, reSetQuery, query, filterByInput, f
         <div className={'Logo'}>
           <Link onClick={reSetQuery} to="/home">Home</Link>
         </div>
-        <div className={'ToggleButtons'}>
+        {/* <div className={'ToggleButtons'}>
           <Link onClick={reSetQuery} to="/recipes">Recipe</Link>
           <Link onClick={reSetQuery} to="/experiances">Experiances</Link>
-        </div>
+        </div> */}
         <div key={'nav_menu'} className={'Menu'}>
 
           {currentUser ? (
