@@ -1,0 +1,334 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500&display=swap');
+
+$font-color: rgb(75, 75, 75);
+$mid-text: rgb(108, 108, 108);
+$subtext: gray;
+$placeholder: rgb(180, 179, 179);
+$form-line: #95989A;
+
+
+.Account{
+  font-family: 'Roboto';
+  display: grid;
+  grid-template-columns: 30% 61%;
+  grid-template-rows: auto;
+  grid-column-gap: 9%;
+  overflow: hidden;
+
+  .Btn{
+    border: 1px solid rgba($color: $mid-text, $alpha: 0.6) !important;
+    color: rgba($color: $mid-text, $alpha: 0.8) !important;
+  }
+
+  .UserInfoForm, .PageForm > *{
+    width: 100%;
+  }
+
+  .UserInfoForm{
+    img{
+      width: 100%;
+      height: auto;
+      margin-bottom: 1.5em;
+    }
+  }
+
+  .PageForm, .UserInfoForm{
+    padding-top: 2em;
+    color: $font-color;
+    width: 90%;
+    margin: 0 auto;
+    font-family: 'Roboto';
+    margin-bottom: 50px;
+    label{
+      margin-top: 0.8rem;
+    }
+    .CancleBtn{
+      border-radius: 30%;
+      width: 150px;
+      height: 35px;
+      border: 1px solid rgba($color: $mid-text, $alpha: 0.6);
+      border-radius: 18px;
+      font-size: 12pt;
+      background-color: rgba($color: white, $alpha: 1.0);
+      margin: 15px 0;
+      margin-left: 10px;
+      color:  rgba($color: $mid-text, $alpha: 0.7);
+
+    }
+    .SubmitBtn{
+      border-radius: 30%;
+      width: 150px;
+      height: 35px;
+      border: 1px solid #9CBF50;
+      border-radius: 18px;
+      font-size: 12pt;
+      background-color: rgba($color: white, $alpha: 1);
+      margin: 15px 0;
+      color:  #9CBF50;
+    }
+
+    ::placeholder {
+      color: $placeholder;
+    }
+    #submission{
+      text-align: center;
+    }
+    
+    input[list], input[type='text'], input[type='number'], textarea, select{
+      margin-top: 0.8rem;
+      margin-bottom: 1.5rem;
+      font-size: 16pt;
+      color: $mid-text;
+      width: 100%;
+      border: 0;
+      line-height: 2.3rem;
+      border-bottom: $form-line 1px solid;
+    }
+    input[type="button"], input[type="file"], input[type="submit"]{
+      cursor:pointer;
+    }
+    textarea{
+      // outline: none;
+      border-radius: 4px;
+      border: 1px solid $form-line;
+      overflow: auto;
+      // padding: 10px;
+      // box-shadow: 1px 1px 1px #999;
+    }
+    input[list]{
+      border-radius: 0;
+      // border-color: blue;
+      line-height: 2.3rem;
+      padding-left: 4px;
+    }
+  
+    input:focus, textarea:focus {
+      background   : white;
+      border-radius: 0px;
+      border: none;
+    }
+
+    input + span{
+      color: $form-line;
+      display: block;
+      text-align: right;
+    }
+  }
+  .AccountInfo{
+    h3{
+      margin-bottom: 0.5em;
+    }
+
+    p{
+      font-family: 'Roboto';
+      font-size: 1.2em;
+      line-height: 1.6em;
+    }
+  }
+  .RecipeBtn{
+    width: 100%;
+    display: flex;
+    align-content: space-between;
+  }
+  .wide{
+    width: 140px !important;
+  }
+  .Right{
+    flex-direction: row-reverse;
+  }
+  h3{
+    font-family: 'Playfair Display';
+    font-size: 3em;//2.25em;
+    font-weight: 500;
+    color: $font-color;
+    margin-top: 0;
+    margin-bottom: 1.3em;
+  }
+  .RecipeUnderline{
+    display: inline-block;
+    border-bottom: 1px solid $mid-text;
+    margin-bottom: 1rem;
+    h4{
+      font-family: 'Roboto';
+      font-weight: 400;
+      color: $mid-text;
+      line-height: 1.8rem;
+      margin-top: 18px;
+      margin-bottom: 0em;
+      color: $mid-text;
+    }
+  }
+  h4{
+    font-family: 'Roboto';
+    font-weight: 400;
+    // font-size: 16pt;
+    color: $mid-text;
+    margin-top: 18px;
+    margin-bottom: 1em;
+    color: $mid-text;
+  }
+  h5{
+    font-family: 'Roboto';
+    font-weight: 400;
+  }
+  p {
+    font-family: 'Playfair Display';
+    font-size: 1rem;
+    line-height: 1.6rem;
+    color: #4b4b4b;
+    margin-top: 0;
+    margin-bottom: 2em;
+  }
+}
+.UserInfo{
+  margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    p{
+      font-size: 1em;
+      color: $subtext;
+      border-top: rgba(29, 29, 29, 0.2) 1px solid;
+      margin-top: 0.2em;
+      padding-top: 1em;
+    }
+    .Avatar{
+      color: $subtext;
+      line-height: 1em;
+      align-items: flex-end;
+      display: flex;
+      margin-bottom: 1.5em;
+      
+      .Info{
+       
+        h4{
+          font-weight: 500;
+        }
+        h4, h5{
+          margin-top: 1.5em;
+          margin-bottom: 0;
+          line-height: 0.5em;
+        }
+      }
+      img{
+        // border: 0.5px solid rgba(29, 29, 29, 0.2);
+        border-radius: 50%;
+        width: 120px;
+        margin-right: 1em;
+        margin-left: 2px;
+        box-shadow: 0px 2px 4px -1px rgba(29, 29, 29, 0.2), 0px 4px 6px 0px rgba(75, 74, 74, 0.04), 0px 1px 7px 0px rgba(182, 176, 176, 0.05);
+
+      }
+      a{
+        color: $subtext;
+        cursor: pointer;
+        margin:0;
+        
+      }
+      a:hover{
+        color:red;
+      }
+      svg{
+        margin-right: 0.3em;
+      }
+      label + span{
+        margin-left: 1em;
+      }
+
+      
+      
+    } 
+}
+
+// .AccountProfile{
+//   max-width: 350px;
+//   flex-direction: row;
+// }
+.AccountRecipes{
+  margin-top: 1em;
+  width: 100%;
+  flex-direction: row;
+  display: grid;
+  transition:  margin-right 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+  grid-template-columns: minmax(170px, 1fr)  minmax(170px, 1fr) minmax(170px, 1fr);
+  grid-template-rows: auto;
+
+  .RecipeCard{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    color: $font-color;
+    // border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    /* width: 100%; */
+    margin: 0 0.5em;
+    /* max-width: 99em; */
+    /* padding: 0 0.3rem; */
+    min-width: 150px;
+    margin-bottom: 2em;
+    position: relative;
+
+    .Star{
+      display: flex;
+      align-items: center;
+      line-height: 1em;
+      
+      h5{
+        display: inline-block;
+        color: $subtext;
+        margin-left: 1em;
+        font-size: 0.83em;
+      }
+
+      svg{
+        margin-right: 0.3em;
+      }
+    }
+
+    .RedcipeCardTitle{
+      margin-bottom: 1.5em;
+    }
+  }
+
+  .RecipeCardImage{
+    // border: 1px solid rgba(0, 0, 0, 0.2);
+    // -webkit-border-top-left-radius: 15px;
+    // -webkit-border-top-right-radius: 15px;
+    // -moz-border-radius-topleft: 15px;
+    // -moz-border-radius-topright: 15px;
+    // border-top-left-radius: 15px;
+    // border-top-right-radius: 15px;
+    width: auto;
+    // height: 230px;
+    max-height: 270px;
+    min-width: 150px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    object-fit: cover;
+    cursor: pointer;
+      
+      img {
+        min-height: 100%;
+        min-width: 100%;
+        position: absolute;
+        top: -9999px;
+        bottom: -9999px;
+        left: -9999px;
+        right: -9999px;
+        margin: auto;
+    }
+  }
+
+  h5 {
+    font-family: 'Roboto';
+    font-weight: 500;
+    font-size: 16pt;
+    color: #6c6c6c;
+    margin-bottom: 1em;
+  }
+
+  
+
+}

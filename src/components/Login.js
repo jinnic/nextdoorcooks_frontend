@@ -39,13 +39,14 @@ class Login extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <h1>Login</h1>
+      <form className={'LoginForm'}  onSubmit={this.handleSubmit}>
+        <h1>Welcome back,</h1>
+        <h1 className={'Second'} >Please log in</h1>
         <label>Username</label>
-        <input type="text" name="username" autoComplete="off" value={this.state.username} onChange={this.handleChange} />
+        <input type="text" name="username" placeholder="username" value={this.state.username} onChange={this.handleChange} />
         <label>Password</label>
         <input type="password" name="password" value={this.state.password} onChange={this.handleChange} autoComplete="current-password" />
-        <input type="submit" value="Login" />
+        <input className={'SubmitBtn'} type="submit" value="Login" />
       </form>
     )
   }

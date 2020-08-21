@@ -32,13 +32,13 @@ const reducer = (state = defaultState , action) =>{
     case SET_CURRENTUSER_FOLLOWEES:
     return {
       ...state,
+      isLoading: false,
       followees: action.payload
       
     }
     case SET_USERS:
       return {
         ...state,
-        isLoading: false,
         users: action.payload
 
       }
@@ -74,6 +74,7 @@ const reducer = (state = defaultState , action) =>{
       // debugger
       return {
         ...state,
+        
         userProfile: {
           ...state.userProfile,
           ...action.payload

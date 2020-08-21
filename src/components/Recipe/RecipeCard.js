@@ -100,6 +100,7 @@ const RecipeCard = ({recipe}) => {
   }
   
   const handleClick =(e)=>{
+    
     if(e.currentTarget.tagName === 'BUTTON'){
       e.stopPropagation()
       //update like in recipe
@@ -120,7 +121,7 @@ const RecipeCard = ({recipe}) => {
 
       
       //console.log("recipe clicked!!!", props.recipe.id)
-    }else if (e.target.ariaLabel=== 'username') {
+    }else if (e.target.name === 'userlink') {
 
       history.push({
         pathname: `/${user.username}`,
@@ -176,11 +177,11 @@ const RecipeCard = ({recipe}) => {
       <div className={"RedcipeCardTitle"}>
           <p className={'Header'}>{name.charAt(0).toUpperCase() + name.slice(1)}</p>
           <span className={'Subheader'}>
-            <Link name={`${user.username}`} to={`/${user.username}`}>{`- by ${user.username.charAt(0).toUpperCase()+user.username.slice(1)}`}</Link>
+            <Link name={'userlink'} to={`/${user.username}`}>{`- by ${user.username.charAt(0).toUpperCase()+user.username.slice(1)}`}</Link>
             </span>
       </div>
       <div className={'Cuisines'}>
-            { ( recipe.cuisines.length > 0) ? recipe.cuisines.map(c => <span> {c} </span>) : "" } 
+            { ( recipe.cuisines.length > 0) ? recipe.cuisines.map(c => <span key={c}> {c} </span>) : "" } 
           </div>
       <div className={'Star'}>
           {renderStars()}

@@ -27,11 +27,12 @@ const ProfileForm =({ handleEdit})=> {
     handleEdit(false)
   }
 
+  const handleCancle =e=>{
+    handleEdit(false)
+  }
 
   return(
-      <form className={"UserInfo"} onSubmit={handleSubmit}>
-          <h1>{username}'s Profile</h1>
-
+      <form className={"UserInfoForm"} onSubmit={handleSubmit}>
           <label>Location</label>
           <input
             type="text"
@@ -40,7 +41,7 @@ const ProfileForm =({ handleEdit})=> {
             value={location}
             onChange={handleChange}
           />
-          <label>Profile Image</label>
+          <label>Profile image URL*</label>
           <input
             type="text"
             name="avatar"
@@ -50,14 +51,16 @@ const ProfileForm =({ handleEdit})=> {
           />
           <img src={ avatar === null || avatar.length === 0  ?  "https://cdn.iconscout.com/icon/free/png-512/account-profile-avatar-man-circle-round-user-30452.png" : avatar} alt={username} />
 
-          <label>Bio</label>
+          <label>Little bit about yourself*</label>
           <textarea
             name="bio"
+            rows="3"
             value={bio}
             onChange={handleChange}
           />
 
-          <input type="submit" value="Update" />
+          <input className={'SubmitBtn'}  type="submit" value="Update" />
+          <input className={'CancleBtn'}  type="button" value="Cancle" onClick={handleCancle}/>
         </form>
   )
 }

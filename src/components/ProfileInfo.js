@@ -2,6 +2,7 @@ import React from 'react'
 import { follow, unfollow } from '../api'
 import { useSelector, useDispatch} from 'react-redux'
 import {ADD_CURRENTUSER_FOLLOWEES, REMOVE_CURRENTUSER_FOLLOWEES} from '../store/user/types'
+import { RiUserFollowLine, RiUserUnfollowLine } from 'react-icons/ri'
 
 
 
@@ -11,6 +12,7 @@ const ProfileInfo =({handleEdit, handleDelete, recipeOwner})=> {
   const followees = useSelector(state => state.user.followees)
   const {id, username, avatar, bio, location}= recipeOwner
   
+  
   const handleClick =(e)=>{
    e.target.name === 'delete' ? handleDelete(e) : handleEdit(true)
 
@@ -19,15 +21,15 @@ const ProfileInfo =({handleEdit, handleDelete, recipeOwner})=> {
   let followed = followees.find(f => f.id === id)
   const renderFollowBtn = () =>{
     return followed ? 
-      <button name='unfollow' onClick={handleFollow}>unfollow</button> :
-      <button name='follow' onClick={handleFollow}>follow</button> 
+      <button className={'Btn wide'} name='unfollow' onClick={handleFollow}>Following <RiUserUnfollowLine key={`follow`} size={20}/></button> :
+      <button className={'Btn wide'} name='follow' onClick={handleFollow}>Follow <RiUserFollowLine key={`follow`} size={20}/></button> 
     
   }
   const renderButtons=()=>{
     return currentUser.id === id ? 
     <>
-      <button onClick={handleClick}>edit profile</button>
-      <button name ='delete' onClick={handleClick}>DELETE ACCOUNT</button>
+        <button className={'Btn wide'} onClick={handleClick}>edit profile</button>
+        <button className={'Btn wide'} name ='delete' onClick={handleClick}>delete account</button>
     </>
     :
     renderFollowBtn()
@@ -57,20 +59,27 @@ const ProfileInfo =({handleEdit, handleDelete, recipeOwner})=> {
     }
     
   }
-  
+  console.log(followees)
   return(
     <div className={"UserInfo"}>
+       <div className={'RecipeBtn'}>
           {renderButtons()}
-          <h1>{username}'s Profile</h1>
-
-          <h3>Location : {location}</h3>
-          
-          <h3>Profile Image</h3>
-          <img src={ avatar === null || avatar.length === 0  ?  "https://cdn.iconscout.com/icon/free/png-512/account-profile-avatar-man-circle-round-user-30452.png" : avatar} alt={username} />
-
-          <h3>Bio : {bio} </h3>
+       </div>
+          <div className={'Avatar'}>
+            <img src={avatar} alt="Avatar"/> 
+            
+            <div className={'Info'}>
+            <h4>{username.charAt(0).toUpperCase()+username.slice(1)}</h4>
+            <h5>{location}</h5>
+            </div>
+          </div>
+          <p>{bio} </p>
+          <div className={'FollowLists'}>
+                
+          </div>
     </div>
   )
+
 }
 
 export default ProfileInfo

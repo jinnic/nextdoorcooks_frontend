@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Filter from './Filter'
 
 import Button from '@material-ui/core/Button';
@@ -30,7 +30,7 @@ const NavBar = ({ currentUser, handleLogout, reSetQuery, query, filterByInput, f
     <header key={'navBar'} className={'NavBar'}>
       <div className={"TopMenu"}>
         <div className={'Logo'}>
-          <Link onClick={reSetQuery} to="/home">Home</Link>
+          <Link onClick={reSetQuery} to="/home">Nextdoor Cooks</Link>
         </div>
         {/* <div className={'ToggleButtons'}>
           <Link onClick={reSetQuery} to="/recipes">Recipe</Link>
@@ -41,8 +41,7 @@ const NavBar = ({ currentUser, handleLogout, reSetQuery, query, filterByInput, f
           {currentUser ? (
             <>          
             <Button aria-controls="account-menu" aria-haspopup="true" onClick={handleClick}>
-              Account
-            </Button>
+            Account</Button>
             <Menu
               id="account-menu"
               anchorEl={anchorEl}

@@ -78,7 +78,7 @@ const Recipe = () => {
 
   const renderInstructions = ()=>{
     if(instructions !== undefined){
-      return instructions.map( i => <><span>Step {i.step}</span><li key={i.instruction}>{i.instruction}</li></>)
+      return instructions.map( i => <><span key={`step_${i}`}>Step {i.step}</span><li key={i.instruction}>{i.instruction}</li></>)
     }
   }
 
@@ -318,7 +318,7 @@ const Recipe = () => {
               <div className={'Row'}>
                 <div className={'RaitingList'}>
                   <div className={'Avatar'}>
-                    <img src={ user.avatar} alt="Avatar"/>
+                    <img src={ currentUser.avatar} alt="Avatar"/>
                     <StarRating rating={newRating} handleStarClick={handleStarClick}/>
                     <form onSubmit={handleSubmit}>
                       <input type="text" name="comment" value={newComment} onChange={handleChange}/>

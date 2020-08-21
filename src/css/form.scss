@@ -7,7 +7,24 @@ $subtext: gray;
 $placeholder: rgb(180, 179, 179);
 $form-line: #95989A;
 
-.RecipeForm{
+.LoginForm{
+  margin-top: 50px !important;
+  h1{
+    margin-bottom: 0 !important;
+    
+  }
+  img{
+    margin: 0 100px;
+  }
+  .Second{
+    margin-top: 0 !important;
+    margin-bottom: 1em !important;
+  }
+  input[type='text'],input[type='password'], textarea, select{
+    margin-bottom: 1.3rem;
+  }
+}
+.RecipeForm, .LoginForm{
   width: 500px;
   
   color: $font-color;
@@ -81,7 +98,8 @@ $form-line: #95989A;
 
   h1{
     font-family: 'Playfair Display';
-    font-size: 36pt;
+    font-size: 3em;
+    font-weight: 500;
     color: $font-color;
   }
   h5{
@@ -106,7 +124,7 @@ $form-line: #95989A;
     text-align: center;
   }
 
-  input[list], input[type='text'], input[type='number'], textarea, select{
+  input[type='password'], input[list], input[type='text'], input[type='number'], textarea, select{
     margin-top: 0.8rem;
     font-size: 16pt;
     color: $mid-text;

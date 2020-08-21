@@ -43,14 +43,15 @@ class SignUp extends React.Component {
     const { username, location, avatar, bio, password } = this.state
 
     return (
-      <form onSubmit={this.handleSubmit}>
-        <h1>Signup</h1>
-
+      <form  className={'LoginForm'} onSubmit={this.handleSubmit}>
+        <h1>Hello stranger,</h1>
+        <h1 className={'Second'} >Let's get you signed up</h1>
         <label>Username</label>
         <input
           type="text"
           name="username"
           autoComplete="off"
+          placeholder="username"
           value={username}
           onChange={this.handleChange}
         />
@@ -60,11 +61,12 @@ class SignUp extends React.Component {
           type="text"
           name="location"
           autoComplete="off"
+          placeholder="Broooklyn, NY"
           value={location}
           onChange={this.handleChange}
         />
 <br/>
-        <label>Profile Image</label>
+        <label>Profile image URL</label>
         <input
           type="text"
           name="avatar"
@@ -75,10 +77,12 @@ class SignUp extends React.Component {
         <img src={avatar.length ? avatar : "https://cdn.iconscout.com/icon/free/png-512/account-profile-avatar-man-circle-round-user-30452.png"} alt={username} />
 <br/>
 
-        <label>Bio</label>
+        <label>Little bit about yourself</label>
         <textarea
           name="bio"
           value={bio}
+          placeholder="I love eating"
+          autoComplete="off"
           onChange={this.handleChange}
         />
 
@@ -91,7 +95,7 @@ class SignUp extends React.Component {
           onChange={this.handleChange}
         />
 
-        <input type="submit" value="Signup" />
+        <input className={'SubmitBtn'} type="submit" value="Signup" />
       </form>
     )
   }

@@ -21,14 +21,16 @@ const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
 }));
 
 //destructire props and use history for routing
 const App =( props )=> {
-  //stype 
+  //style 
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+
   const history = props.history
   const dispatch  = useDispatch()
 
@@ -36,7 +38,6 @@ const App =( props )=> {
   const currentUser = useSelector(state => state.user.currentUser)
   const isLoading = useSelector(state => state.user.isLoading)
   const recipes = useSelector(state => state.recipe.recipes)
-  const followees = useSelector(state => state.user.followees)
   
   const query = useSelector(state => state.search.query)
   const filterByInput=(e)=>{
@@ -69,7 +70,7 @@ const App =( props )=> {
   }
 
   const [searchResults, setSearchResults] = useState([]);
-  
+ 
   useEffect(()=>{
     let results = recipes
     let queryResult = []
@@ -117,11 +118,10 @@ const App =( props )=> {
     }
 
     setSearchResults(results);
+
+    
     
   },[query, recipes, sort])
-
-  
-
   
   useEffect(()=>{
     dispatch({type:IS_FETCHING, payload: true})
@@ -157,6 +157,7 @@ const App =( props )=> {
 
       }else{
         console.log(data.error)
+        history.push('/home')
       }
     })
     
@@ -183,33 +184,60 @@ const App =( props )=> {
     // localStorage.clear()
     localStorage.removeItem("token")
     dispatch({type: RESET_CURRENTUSER})
+    history.push('/')
   }
 
-  if (isLoading || fetching){
-    return (<Backdrop className={classes.backdrop} open={open} >
-              <CircularProgress color="inherit" />
-            </Backdrop>)
-  }
-  console.log("In App Props : ", props)
-    return (
+  const [likedRecipes, setLikedRecipes] = useState([]);
+  useEffect(() => {
+    if(currentUser && recipes){
+      let liked = []
+      for(let i = 0; i< recipes.length; i++){
+        for(let j = 0; j< recipes[i].likes.length; j++){
+          if(recipes[i].likes[j].user_id === currentUser.id){
+            liked.push(recipes[i])
+          }
+        }    
+      }
+      console.log("LIKED RECIPES : ", liked)
+      setLikedRecipes(liked)
+    }
+  }, [recipes])
+  // const handleLikedRecipes =()=>{
+  //     let liked = []
+  //     for(let i = 0; i<currentUser.likes.length; i++){
+  //       liked.push(recipes.filter(recipe => recipe.id === currentUser.likes[i].likeable_id).[0])
+  //     }
+  //     console.log("LIKED RECIPES : ", liked)
+  //     return liked
+  // }
+  
+  // return (<Backdrop className={classes.backdrop} open={open} >
+  //   <CircularProgress color="inherit" />
+  // </Backdrop>)
+  // if (isLoading || fetching ){
+    
+  // }
+  return (
       <>
+        <Backdrop className={classes.backdrop} open={fetching} >
+              <CircularProgress color="inherit" />
+        </Backdrop>
         <NavBar currentUser={currentUser} handleLogout={handleLogout} reSetQuery={reSetQuery} query={query} filterByInput={filterByInput} filterByCusines={addFilter} removeFilter={removeFilter} />
         <main>
         <div className={'Container'}>
           <Switch>
-            <Route path="/signup">
+            <Route exact path="/signup">
               <SignUp handleLogin={handleLogin} dispatch={dispatch} />
             </Route>
-            <Route path="/login">
+            <Route exact path="/login">
               <Login handleLogin={handleLogin} />
             </Route>
-            <Route path="/recipes/new">
+            <Route exact path="/recipes/new">
               {currentUser ? <RecipeForm /> : <Redirect to='/' />}
             </Route>
-            <Route path="/recipes/saved">
+            <Route exact path="/recipes/saved">
               {currentUser ? <div className={'Row'}><h1 >Bookmarked Recipes</h1></div> : <Redirect to='/' />}
-              {/* <h2>Recipes</h2>   */}
-              {searchResults && searchResults.length ? <RecipeContainer recipes={searchResults} />:""}
+              {currentUser && recipes ? <RecipeContainer recipes={likedRecipes} /> : ""}
             </Route>
             <Route path={`/recipes/:id/:slug`}>
               {currentUser ? <Recipe /> : <Redirect to='/' />}
@@ -220,11 +248,11 @@ const App =( props )=> {
                   {/* <RecipeContainer recipes={[]} /> */}
             </Route>
             <Route  exact path="/experiances" >
-              {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
+              {currentUser ? <div className={'Row'}><h1 >{currentUser.username.charAt(0).toUpperCase()+currentUser.username.slice(1)}, what are you cooking toay?</h1></div> : <Redirect to='/' />}
               <h2>Experiances</h2>  
             </Route>
             <Route exact path="/home" >
-              {currentUser ? <div className={'Row'}><h1 >Welcome, {currentUser.username}</h1></div> : <Redirect to='/' />}
+              {currentUser ? <div className={'Row'}><h1 >{currentUser.username.charAt(0).toUpperCase()+currentUser.username.slice(1)}, what are you cooking toay?</h1></div> : <Redirect to='/' />}
               {/* <h2>Recipes</h2>   */}
               {searchResults && searchResults.length ? <RecipeContainer recipes={searchResults} />:""}
               {/* <h2>Experiances</h2>  */}
@@ -235,7 +263,7 @@ const App =( props )=> {
               <Account /> 
             </Route>
             <Route exact path="/" >
-              <h1>Please Login or Sign Up</h1>
+              <h1>Welcome, Sign up and share your recipes</h1>
               {searchResults && searchResults.length ? <RecipeContainer recipes={searchResults} />:""}
 
               {/* {filterRecipes() && filterRecipes().length ? <RecipeContainer recipes={filterRecipes()}/>: ""} */}
