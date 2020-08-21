@@ -9,16 +9,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 const NavBar = ({ currentUser, handleLogout, reSetQuery, query, filterByInput, filterByCusines, removeFilter }) => {
   
   const [anchorEl, setAnchorEl] = useState(null);
-  // const path = useLocation().pathname
-  // const [showFilter, setShowFilter] = useState(true)
-  // if(path === "/home" || path === "/"){
-  //   setShowFilter(true)
-  // }else{
-  //   setShowFilter(false)
-  // }
   const handleClick = (e) => {
-    // e.preventDefault();
-    // e.stopPropagation();  
+    e.preventDefault();
+    e.stopPropagation();  
     setAnchorEl(e.currentTarget);
   };
 
@@ -40,10 +33,11 @@ const NavBar = ({ currentUser, handleLogout, reSetQuery, query, filterByInput, f
 
           {currentUser ? (
             <>          
-            <Button aria-controls="account-menu" aria-haspopup="true" onClick={handleClick}>
-            Account</Button>
+            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+              Account
+            </Button>
             <Menu
-              id="account-menu"
+              id="simple-menu"
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}
