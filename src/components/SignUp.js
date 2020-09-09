@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import {ADD_TO_USERS} from '../store/user/types'
 
 class SignUp extends React.Component {
@@ -98,13 +97,6 @@ class SignUp extends React.Component {
         <input className={'SubmitBtn'} type="submit" value="Signup" />
       </form>
     )
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  // debugger
-  return {
-    addUsers: user => dispatch({ type: ADD_TO_USERS, payload: user })
   }
 }
 

@@ -5,16 +5,13 @@ import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
-      // margin: theme.spacing(1),
       width: '30.5ch',
     },
   }
 }));
 
 const Search =({handleSetQuery, query })=> {
-  // state = {
-  //   searchTerm: ""
-  // }
+
   const classes = useStyles();
   const handleSubmit = e => {
     e.preventDefault()
@@ -23,11 +20,6 @@ const Search =({handleSetQuery, query })=> {
   }
 
   const handleChange = e => {
-    // this.setState({ searchTerm: e.target.value },
-    //   ()=>{
-    //     this.props.handleSetQuery(this.state.searchTerm)
-    //   })
-
     handleSetQuery(e)
   }
   
@@ -51,16 +43,3 @@ const Search =({handleSetQuery, query })=> {
 }
 
 export default Search
-
-{/* <form className="SearchBar" >
-  <label>Search</label>
-  <input
-    key='search'
-    type="text"
-    name="searchTerm"
-    placeholder="Search..."
-    autoComplete="off"
-    value={query}
-    onChange={handleChange}
-  />
-</form>  */}

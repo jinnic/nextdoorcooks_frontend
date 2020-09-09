@@ -37,7 +37,6 @@ const RecipeForm =()=> {
         step:0,
         instruction: "",
         ingredients: {...ingredState.ingredients[0]}
-        //  [{...ingredState.ingredients[0]}]
       }
     ]
   })
@@ -183,10 +182,7 @@ const RecipeForm =()=> {
           measurement:"n/a"
         }
       ]
-    }));
-    // let instructions = [...instructState.instructions];
-    // instructions[0]['ingredients'] = {...ingredState.ingredients[0]}
-    // setInstructions({ instructions });
+    }))
   }
 
   const removeIngrediant =(i) =>{
@@ -326,7 +322,6 @@ const RecipeForm =()=> {
     })
   }
 
-  // console.log("ingredState", instructState);
     return (
       
       <form className={'RecipeForm'} onSubmit={handleSubmit}>
@@ -344,14 +339,6 @@ const RecipeForm =()=> {
           onChange={handleChange}
         />
         <span>{nameFieldCounter}/40</span>
-        {/* <label>Portion Type</label>
-        <input
-          type="text"
-          name="portion"
-          autoComplete="off"
-          value={name}
-          onChange={handleChange}
-        /> */}
         <label>Cuisine type (max 3)*
           {renderCusineOptions()}
           { infoState.cuisines.length <= 2 ?

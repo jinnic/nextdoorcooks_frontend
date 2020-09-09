@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { FaStar } from 'react-icons/fa'
 const StarRating = ({rating, handleStarClick}) =>{
-
-      // const [rating, setRating] = useState(null)
       const [hover, setHover] = useState(null)
       const [activeColor, inactiveColor] = ["#ffc107","#e4e5e9"]
 
@@ -32,7 +30,6 @@ const StarRating = ({rating, handleStarClick}) =>{
             )
           })
         }
-        {/* <span>you've rated {rating}</span> */}
       </div>
   )
 }
