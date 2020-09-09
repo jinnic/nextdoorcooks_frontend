@@ -7,7 +7,7 @@ by [Hyojin](https://github.com/jinnic)
 
 ### About ###
 
-Nextdoor Cooks is a drawing app written in React with a Ruby on Rails backend. 
+Food recipe social media app that provides a platform to share diverse cultural heritage, create social connection and understanding through food. 
 
 Nextdoor Cooks allows a user to:
 * Sign up and create an account.
