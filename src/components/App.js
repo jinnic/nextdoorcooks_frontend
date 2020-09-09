@@ -248,11 +248,11 @@ const App =( props )=> {
                   {/* <RecipeContainer recipes={[]} /> */}
             </Route>
             <Route  exact path="/experiances" >
-              {currentUser ? <div className={'Row'}><h1 >{currentUser.username.charAt(0).toUpperCase()+currentUser.username.slice(1)}, what are you cooking toay?</h1></div> : <Redirect to='/' />}
+              {currentUser ? <div className={'Row'}><h1 >{currentUser.username.charAt(0).toUpperCase()+currentUser.username.slice(1)}, what are you cooking today?</h1></div> : <Redirect to='/' />}
               <h2>Experiances</h2>  
             </Route>
             <Route exact path="/home" >
-              {currentUser ? <div className={'Row'}><h1 >{currentUser.username.charAt(0).toUpperCase()+currentUser.username.slice(1)}, what are you cooking toay?</h1></div> : <Redirect to='/' />}
+              {currentUser ? <div className={'Row'}><h1 >{currentUser.username.charAt(0).toUpperCase()+currentUser.username.slice(1)}, what are you cooking today?</h1></div> : <Redirect to='/' />}
               {/* <h2>Recipes</h2>   */}
               {searchResults && searchResults.length ? <RecipeContainer recipes={searchResults} />:""}
               {/* <h2>Experiances</h2>  */}
