@@ -16,8 +16,7 @@ class SignUp extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    // TODO: make a fetch request to sign up the current user
-    fetch("http://localhost:3000/users", {
+    fetch("https://nextdoorcooks-api.herokuapp.com/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

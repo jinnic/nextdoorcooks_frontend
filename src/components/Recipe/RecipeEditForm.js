@@ -327,7 +327,7 @@ const RecipeEditForm =({recipe, setEditRecipe})=> {
     form.append("imageable_id", recipe.id)
     form.append("user_id", currentUser.id)
     
-    fetch("http://localhost:3000/items", {
+    fetch("https://nextdoorcooks-api.herokuapp.com/items", {
             method: "POST",
             body: form
           })
