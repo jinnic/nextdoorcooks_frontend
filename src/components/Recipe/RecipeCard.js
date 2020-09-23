@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useHistory, Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { addLike, removeLike } from '../../api'
@@ -58,9 +58,9 @@ const RecipeCard = ({recipe}) => {
   const classes = useStyles();
   const history = useHistory()
   const dispatch = useDispatch()
-  const {name, duration, description, ingredients, instructions, user, ratings, likes} = recipe
+  const {name, user, ratings, likes} = recipe
   const currentUser = useSelector(state=>state.user.currentUser)
-  const users = useSelector(state=>state.user.users)
+  // const users = useSelector(state=>state.user.users)
   
   let like = []
   if(currentUser === null || likes === undefined){
@@ -79,25 +79,24 @@ const RecipeCard = ({recipe}) => {
      return like.length === 0 ? false : true
   }
 
-  const renderInstructions = ()=>{
-    // debugger
-    if(instructions !== undefined){
-      
-      return instructions.map( i => <li key={i.instruction}>{i.instruction}</li>)
-    }
-  }
+  // const renderInstructions = ()=>{
+  //   // debugger
+  //   if(instructions !== undefined){  
+  //     return instructions.map( i => <li key={i.instruction}>{i.instruction}</li>)
+  //   }
+  // }
 
-  const renderIngredients =()=>{
-    if(ingredients !== undefined){
-      return ingredients.map( (i,x) => {
-        let mesurement = ""
-        if (i.measurement !== 'n/a' ){
-          mesurement = i.measurement
-        }
-        return <li key={`${i.name}_${x}`}>{`${i.amount} ${mesurement} of ${i.name}`}</li>
-      })
-    }
-  }
+  // const renderIngredients =()=>{
+  //   if(ingredients !== undefined){
+  //     return ingredients.map( (i,x) => {
+  //       let mesurement = ""
+  //       if (i.measurement !== 'n/a' ){
+  //         mesurement = i.measurement
+  //       }
+  //       return <li key={`${i.name}_${x}`}>{`${i.amount} ${mesurement} of ${i.name}`}</li>
+  //     })
+  //   }
+  // }
   
   const handleClick =(e)=>{
     
@@ -155,15 +154,16 @@ const RecipeCard = ({recipe}) => {
       { (recipe.items.length > 0) ?
       <>
         {haveLikes() ? 
-        <Fab className={classes.fab}  aria-label="add to favorites" onClick={handleClick} name="like" className={'LikeBtn'}>
+        <Fab className={classes.fab +' LikeBtn'}  aria-label="add to favorites" onClick={handleClick} name="like">
           <BookmarkIcon />
         </Fab>
         :
-        <Fab className={classes.fab} aria-label="add to favorites" onClick={handleClick} name="unlike" className={'LikeBtn'}>
+        <Fab className={classes.fab+' LikeBtn'} aria-label="add to favorites" onClick={handleClick} name="unlike">
          <BookmarkBorderIcon/>
         </Fab>}
       <div className={'RecipeCardImage'} >
         <img
+          alt={`${recipe.name}`}
           className={'RecipeCardImage'}
           src={`${recipe.items[0].image}`}
         />
@@ -171,6 +171,7 @@ const RecipeCard = ({recipe}) => {
       </>
       :
       <img
+        alt={'empty'}
         className={'RecipeCardImage'}
       />
       }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {UPDATE_USER, SET_CURRENTUSER} from '../store/user/types'
-import {updateUser} from '../api'
+import {UPDATE_USER, SET_CURRENTUSER} from '../../store/user/types'
+import {updateUser} from '../../api'
 
 
 const ProfileForm =({ handleEdit})=> {

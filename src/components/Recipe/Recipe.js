@@ -59,7 +59,7 @@ const Recipe = () => {
       const categories = [...new Set(ingredients.map(i => i.category))]
       let a = {}
       for(let i = 0; i < categories.length; i++){
-        var c = categories[i]
+        let c = categories[i]
         a[c]=ingredients.filter(i => i.category === c)
       }
       // debugger
@@ -222,7 +222,7 @@ const Recipe = () => {
   }
   const renderImages = ()=>{
     if(recipe.items[0].image !== null){
-      return <img src={recipe.items[0].image}/>
+      return <img alt={name} src={recipe.items[0].image}/>
     }else{
       return <video src={recipe.items[0].video} controls/>
     }
@@ -274,7 +274,6 @@ const Recipe = () => {
               
 
            </div>
-          {/* end of left */}
 
            <div className={'Right'}>
             <h3>{name}</h3>
@@ -288,11 +287,11 @@ const Recipe = () => {
               
               { 
                   haveLikes() ? 
-                  <Fab className={classes.fab}  aria-label="add to favorites" onClick={handleClick} name="like" className={'LikeBtn'}>
+                  <Fab className={classes.fab+' LikeBtn'}  aria-label="add to favorites" onClick={handleClick} name="like">
                     <BookmarkIcon />
                   </Fab>
                   :
-                  <Fab className={classes.fab} aria-label="add to favorites" onClick={handleClick} name="unlike" className={'LikeBtn'}>
+                  <Fab className={classes.fab+' LikeBtn'} aria-label="add to favorites" onClick={handleClick} name="unlike">
                   <BookmarkBorderIcon/>
                   </Fab>
                 }
@@ -302,7 +301,7 @@ const Recipe = () => {
               {recipe.items.length > 0 ? 
                 renderImages()
               :
-              <img src='https://cdnp.iconscout.com/photo/premium/thumb/vintage-food-background-1696185-1438016.jpg'/>
+              <img alt={'empty'} src='https://cdnp.iconscout.com/photo/premium/thumb/vintage-food-background-1696185-1438016.jpg'/>
 
               }
               </div>
@@ -333,7 +332,6 @@ const Recipe = () => {
                 </div>
               </div>
            </div>
-           {/* end of Right */}
            </div>
           </>
         }

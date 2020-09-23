@@ -25,10 +25,6 @@ const NavBar = ({ currentUser, handleLogout, reSetQuery, query, filterByInput, f
         <div className={'Logo'}>
           <Link onClick={reSetQuery} to="/home">Nextdoor Cooks</Link>
         </div>
-        {/* <div className={'ToggleButtons'}>
-          <Link onClick={reSetQuery} to="/recipes">Recipe</Link>
-          <Link onClick={reSetQuery} to="/experiances">Experiances</Link>
-        </div> */}
         <div key={'nav_menu'} className={'Menu'}>
 
           {currentUser ? (
@@ -54,9 +50,6 @@ const NavBar = ({ currentUser, handleLogout, reSetQuery, query, filterByInput, f
               </MenuItem>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
-              {/* <Link to={`/${currentUser.username}`}>Account</Link>
-              <Link to="/recipes/new">Add Recipe</Link>
-              <button onClick={handleLogout}>Logout</button> */}
             </>
           ) : (
               <>
@@ -67,7 +60,6 @@ const NavBar = ({ currentUser, handleLogout, reSetQuery, query, filterByInput, f
         </div>
       </div>
       <Filter className={'Filter'} query={query} handleSetQuery={filterByInput} handleSetSort={filterByCusines} removeFilter={removeFilter} />
-      {/* showFilter ? <Filter className={'Filter'} query={query} handleSetQuery={filterByInput} handleSetSort={filterByCusines} removeFilter={removeFilter} /> : ''} */}
     </header>
   )
 }

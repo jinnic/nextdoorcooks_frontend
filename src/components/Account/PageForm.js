@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { SET_CURRENTUSER} from '../store/user/types'
-import {updateUser} from '../api'
+import { SET_CURRENTUSER} from '../../store/user/types'
+import {updateUser} from '../../api'
 
 
 const PageForm =({handlePageEdit})=> {

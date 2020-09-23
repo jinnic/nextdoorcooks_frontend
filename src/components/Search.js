@@ -13,11 +13,10 @@ const useStyles = makeStyles((theme) => ({
 const Search =({handleSetQuery, query })=> {
 
   const classes = useStyles();
-  const handleSubmit = e => {
-    e.preventDefault()
-    this.props.handleSetQuery(this.state.searchTerm)
-    
-  }
+  // const handleSubmit = e => {
+  //   e.preventDefault()
+  //   this.props.handleSetQuery(this.state.searchTerm)
+  // }
 
   const handleChange = e => {
     handleSetQuery(e)

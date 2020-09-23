@@ -3,12 +3,12 @@ import ProfileForm from './ProfileForm'
 import ProfileInfo from './ProfileInfo'
 import PageForm from './PageForm'
 import PageInfo from './PageInfo'
-import RecipeCard from './Recipe/RecipeCard'
+import RecipeCard from '../Recipe/RecipeCard'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useHistory, Redirect } from 'react-router-dom'
-import {RESET_CURRENTUSER, DELETE_USER} from '../store/user/types'
-import {DELETE_RECIPES_OF_USER} from '../store/recipe/types'
-import {deleteUser} from '../api'
+import {RESET_CURRENTUSER, DELETE_USER} from '../../store/user/types'
+import {DELETE_RECIPES_OF_USER} from '../../store/recipe/types'
+import {deleteUser} from '../../api'
 
 
 const Account =()=> {

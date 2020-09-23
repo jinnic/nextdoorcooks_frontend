@@ -1,7 +1,7 @@
 import React from 'react'
-import { follow, unfollow } from '../api'
+import { follow, unfollow } from '../../api'
 import { useSelector, useDispatch} from 'react-redux'
-import {ADD_CURRENTUSER_FOLLOWEES, REMOVE_CURRENTUSER_FOLLOWEES} from '../store/user/types'
+import {ADD_CURRENTUSER_FOLLOWEES, REMOVE_CURRENTUSER_FOLLOWEES} from '../../store/user/types'
 import { RiUserFollowLine, RiUserUnfollowLine } from 'react-icons/ri'
 
 

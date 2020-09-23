@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import SignUp from './SignUp'
 import Login from './Login'
 import NavBar from './NavBar'
-import Account from './Account'
+import Account from './Account/Account'
 import Recipe from './Recipe/Recipe'
 import RecipeForm from './Recipe/RecipeForm'
 import RecipeContainer from './Recipe/RecipeContainer'
@@ -29,14 +29,14 @@ const useStyles = makeStyles((theme) => ({
 const App =( props )=> {
   //style 
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  // const [open, setOpen] = React.useState(true);
 
   const history = props.history
   const dispatch  = useDispatch()
 
   const fetching = useSelector(state=>state.recipe.recipeFetching)
   const currentUser = useSelector(state => state.user.currentUser)
-  const isLoading = useSelector(state => state.user.isLoading)
+  // const isLoading = useSelector(state => state.user.isLoading)
   const recipes = useSelector(state => state.recipe.recipes)
   
   const query = useSelector(state => state.search.query)
@@ -201,7 +201,7 @@ const App =( props )=> {
       console.log("LIKED RECIPES : ", liked)
       setLikedRecipes(liked)
     }
-  }, [recipes])
+  }, [recipes, currentUser])
 
   return (
       <>

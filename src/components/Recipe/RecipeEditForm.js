@@ -7,7 +7,7 @@ import {updateImageDisplay} from './File'
 
 
 const RecipeEditForm =({recipe, setEditRecipe})=> {
-  const {id, name, cuisines, duration, description, ingredients, instructions, items, user} = recipe
+  const {id, name, cuisines, duration, description, ingredients, instructions, items} = recipe
   const currentUser = useSelector(state=>state.user.currentUser)
   const dispatch = useDispatch()
   const [nameFieldCounter,setNameCounter] = useState(name.length)
@@ -368,14 +368,6 @@ const RecipeEditForm =({recipe, setEditRecipe})=> {
           onChange={handleChange}
         />
         <span>{nameFieldCounter}/40</span>
-        {/* <label>Portion Type</label>
-        <input
-          type="text"
-          name="portion"
-          autoComplete="off"
-          value={name}
-          onChange={handleChange}
-        /> */}
         <label>Cuisine type (max 3)*
           {renderCusineOptions()}
           { infoState.cuisines.length <= 2 ?
@@ -440,7 +432,6 @@ const RecipeEditForm =({recipe, setEditRecipe})=> {
             accept="image/*, video/*" 
             multiple />
         <div className="FilePreview">
-          {/* <p>No files currently selected for upload</p> */}
         </div>
         <input className={'SubmitBtn'} type="submit" value="Done" />
       </form>
