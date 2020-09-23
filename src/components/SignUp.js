@@ -23,16 +23,15 @@ class SignUp extends React.Component {
       },
       body: JSON.stringify(this.state)
     })
-      .then(r => r.json())
-      // then set that user in state in our App component
+      .then(r => r.json())       // then set that user in state in our App component
       .then(data => {
         const { user, token } = data
+        console.log(user, "token : ",token)
         this.props.dispatch({ type: ADD_TO_USERS, payload: user })
         this.props.handleLogin(user)
         // also save the token to localStorage
         // localStorage.userId = data.id
         localStorage.token = token
-        
       })
   }
 

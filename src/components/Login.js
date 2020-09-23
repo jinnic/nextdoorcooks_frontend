@@ -12,7 +12,7 @@ class Login extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    fetch("https://nextdoorcooks-api.herokuapp.com/login", {
+    fetch(`https://nextdoorcooks-api.herokuapp.com/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -21,7 +21,8 @@ class Login extends React.Component {
     })
       .then(r => r.json())
       .then(data => {
-
+        debugger
+        console.log("login return data: ",data)
         if (!data.error) {
           console.log(data)
           const { user, token } = data
