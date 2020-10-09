@@ -1,6 +1,6 @@
 export const getCurrentUser = () => {
   console.log("Fetch Current user : AUTO LOGIN")
-  return fetch(`http://localhost:3000/autologin`, 
+  return fetch(`http://localhost:3000/auto_login`, 
         {
           headers: {
             "Authorization": `Bearer ${localStorage.token}`
