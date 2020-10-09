@@ -1,6 +1,6 @@
 export const getCurrentUser = () => {
   console.log("Fetch Current user : AUTO LOGIN")
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/autologin`, 
+  return fetch(`https://nextdoorcooks-api.herokuapp.com/auto_login`, 
         {
           headers: {
             "Authorization": `Bearer ${localStorage.token}`
@@ -8,7 +8,7 @@ export const getCurrentUser = () => {
       })
         .then(r => r.json())
   // if(localStorage.token) {
-  //   return fetch(`http://localhost:3000/autologin`, 
+  //   return fetch(`http://localhost:3000/auto_login`, 
   //           {
   //             headers: {
   //               "Authorization": `Bearer ${localStorage.token}`
