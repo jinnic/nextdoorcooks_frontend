@@ -23,7 +23,12 @@ export const getCurrentUser = () => {
 
 export const getCurrentUserFollowees = (id)=>{
   console.log("Fetch Current FOLLOWEES")
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/users/${id}/following`)
+  return fetch(`https://nextdoorcooks-api.herokuapp.com/users/${id}/following`, 
+        {
+          headers: {
+            "Authorization": `Bearer ${localStorage.token}`
+        }
+      })
         .then(r => r.json())
 }
 

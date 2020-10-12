@@ -142,6 +142,7 @@ const App =( props )=> {
         const path = history.location.pathname
         getCurrentUserFollowees(data.id)
           .then(data => {
+            debugger
             if (!data.error) {
               dispatch({type: SET_CURRENTUSER_FOLLOWEES, payload: data })
             }else{
@@ -156,7 +157,7 @@ const App =( props )=> {
         // history.push('/home')
 
       }else{
-        console.log(data.error)
+        console.log('no current user',data.error)
         history.push('/home')
       }
     })
