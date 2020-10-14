@@ -142,11 +142,11 @@ const App =( props )=> {
         const path = history.location.pathname
         getCurrentUserFollowees(data.id)
           .then(data => {
-            debugger
             if (!data.error) {
               dispatch({type: SET_CURRENTUSER_FOLLOWEES, payload: data })
+              console.log("FOLLOWEE ", data)
             }else{
-              console.log("FOLLOWEE ", data.error)
+              console.log("FOLLOWEE ERROR", data.error)
             }
           })
         // debugger

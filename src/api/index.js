@@ -76,6 +76,7 @@ export const addRecipe = (form)=>{
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.token}`
             },
             body: form
           })
@@ -87,6 +88,7 @@ export const updateRecipe = (recipe) =>{
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.token}`
             },
             body: JSON.stringify(recipe)
           })
@@ -99,6 +101,7 @@ export const deleteRecipe = (recipe) =>{
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.token}`
             }
           })
             .then(r => r.json())

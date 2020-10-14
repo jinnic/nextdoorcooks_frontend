@@ -99,7 +99,7 @@ const RecipeCard = ({recipe}) => {
   // }
   
   const handleClick =(e)=>{
-    
+    console.log('RecipeCard Handle Click', e.target, e.target.className)
     if(e.currentTarget.tagName === 'BUTTON'){
       e.stopPropagation()
       //update like in recipe
@@ -120,8 +120,8 @@ const RecipeCard = ({recipe}) => {
 
       
       //console.log("recipe clicked!!!", props.recipe.id)
-    }else if (e.target.name === 'userlink') {
-
+    }else if (e.target.className === 'RedcipeCardTitle' || e.target.name === 'userlink' || e.target.tagName === "FONT") {
+      e.stopPropagation()
       history.push({
         pathname: `/${user.username}`,
       })
@@ -131,8 +131,6 @@ const RecipeCard = ({recipe}) => {
         pathname: `/recipes/${recipe.id}/${recipeName}`
       })
     }
-    //debugger
-    
   }
 
   const renderStars =()=>{
@@ -177,8 +175,8 @@ const RecipeCard = ({recipe}) => {
       }
       <div className={"RedcipeCardTitle"}>
           <p className={'Header'}>{name.charAt(0).toUpperCase() + name.slice(1)}</p>
-          <span className={'Subheader'}>
-            <Link name={'userlink'} to={`/${user.username}`}>{`- by ${user.username.charAt(0).toUpperCase()+user.username.slice(1)}`}</Link>
+          <span className={'Subheader'} name={'userlink'} >
+            <Link className={'userlink'} to={`/${user.username}`}>{`- by ${user.username.charAt(0).toUpperCase()+user.username.slice(1)}`}</Link>
             </span>
       </div>
       <div className={'Cuisines'}>
