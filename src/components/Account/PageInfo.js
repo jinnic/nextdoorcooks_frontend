@@ -5,7 +5,7 @@ import { useSelector} from 'react-redux'
 
 const PageInfo =({handleEdit, handleDelete, recipeOwner})=> {
   const currentUser = useSelector(state => state.user.currentUser)
-  const {id, username, title, about}= recipeOwner
+  const {id, username, title, about} = recipeOwner
   
   const handleClick =(e)=>{
    e.target.name === 'delete' ? handleDelete(e) : handleEdit(true)

@@ -277,7 +277,10 @@ const Recipe = () => {
 
            <div className={'Right'}>
             <h3>{name}</h3>
-            <div className={'Avatar'}><img src={ user.avatar} alt="Avatar"/> <a href={`https://nextdoorcooks.netlify.app/${user.username}`}>{`- by ${user.username}`}</a></div>
+            <div className={'Avatar'}><img src={ user.avatar} alt="Avatar"/>             
+              {/* <a href={`https://nextdoorcooks.netlify.app/${user.username}`}>{`- by ${user.username}`}</a> */}
+              <Link name={'userlink'} to={`/${user.username}`}>{`- by ${user.username.charAt(0).toUpperCase()+user.username.slice(1)}`}</Link>
+            </div>
             <div className={'RatingBookmark'}>
             <div className={'Star'}>
               {renderStars()}
