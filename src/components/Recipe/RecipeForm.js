@@ -240,7 +240,7 @@ const RecipeForm =()=> {
     //   .then(recipe => dispatch({type: ADD_RECIPE, payload: recipe}))
     // console.log("want to redirect : ", props)
     dispatch({type: IS_FETCHING, payload: true})
-    fetch("https://nextdoorcooks-api.herokuapp.com/recipes", {
+    fetch("http://localhost:3000/recipes", {
                 method: "POST",
                 body: form
           })

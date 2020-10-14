@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation, useHistory , Link} from 'react-router-dom'
 import RecipeEditForm from './RecipeEditForm'
 import {deleteRecipe, addLike, removeLike, addRating, updateRating } from '../../api/index'
 import {DELETE_RECIPE, UPDATE_RECIPE} from '../../store/recipe/types'
@@ -113,7 +113,7 @@ const Recipe = () => {
   }
 
   const handleClick =(e)=>{
-    console.log(e.target.name)
+    console.log('Recipe Handle Click', e.target.name)
     if(e.target.name === 'edit'){
       //load edit form
       setEditRecipe(true)
@@ -328,7 +328,7 @@ const Recipe = () => {
                     </form>
                   </div>
                   
-                  <hr class="solid"></hr>
+                  <hr className="solid"></hr>
                   <ul>
                   {renderComments()}
                   </ul>

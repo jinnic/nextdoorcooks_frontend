@@ -12,7 +12,7 @@ class Login extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    fetch(`https://nextdoorcooks-api.herokuapp.com/login`, {
+    fetch(`http://localhost:3000/login`, {
       method: "POST",
       headers: {
           "Content-Type": "application/json",
