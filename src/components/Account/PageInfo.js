@@ -24,7 +24,7 @@ const PageInfo =({handleEdit, handleDelete, recipeOwner})=> {
   return(
     <div className={"AccountInfo"}>
       {renderButtons()}
-      <h3>{title !== null || title === "" ? title : `${username.charAt(0).toUpperCase()+currentUser.username.slice(1)}'s page`}</h3> 
+      <h3>{title !== null || title === "" ? title : `${username.charAt(0).toUpperCase()+username.slice(1)}'s page`}</h3> 
       <p>
       {about !== null || about === "" ? about : "yet to come!"}
       </p>
