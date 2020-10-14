@@ -1,6 +1,6 @@
 export const getCurrentUser = () => {
   console.log("Fetch Current user : AUTO LOGIN")
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/auto_login`, 
+  return fetch(`http://localhost:3000/auto_login`, 
         {
           headers: {
             "Authorization": `Bearer ${localStorage.token}`
@@ -23,7 +23,7 @@ export const getCurrentUser = () => {
 
 export const getCurrentUserFollowees = (id)=>{
   console.log("Fetch Current FOLLOWEES")
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/users/${id}/following`, 
+  return fetch(`http://localhost:3000/users/${id}/following`, 
         {
           headers: {
             "Authorization": `Bearer ${localStorage.token}`
@@ -34,7 +34,7 @@ export const getCurrentUserFollowees = (id)=>{
 
 export const getUsers = () => {
   console.log("Fetch Users")
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/users`, 
+  return fetch(`http://localhost:3000/users`, 
             {
               headers: {
                 "Authorization": `Bearer ${localStorage.token}`
@@ -44,7 +44,7 @@ export const getUsers = () => {
 }
 
 export const updateUser = (userProfile) =>{
-  return fetch("https://nextdoorcooks-api.herokuapp.com/profile", {
+  return fetch("http://localhost:3000/profile", {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export const updateUser = (userProfile) =>{
             .then(r => r.json())
 }
 export const deleteUser=(user)=>{
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/users/${user.id}`, {
+  return fetch(`http://localhost:3000/users/${user.id}`, {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
@@ -66,13 +66,13 @@ export const deleteUser=(user)=>{
 }
 export const getRecipes = () =>{
   console.log("Fetch RECIPES")
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/recipes`)
+  return fetch(`http://localhost:3000/recipes`)
             .then(r => r.json())
 }
 
 //using FormData so data is already stringified
 export const addRecipe = (form)=>{
-  return fetch("https://nextdoorcooks-api.herokuapp.com/recipes", {
+  return fetch("http://localhost:3000/recipes", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export const addRecipe = (form)=>{
 }
 
 export const updateRecipe = (recipe) =>{
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/recipes/${recipe.id}`, {
+  return fetch(`http://localhost:3000/recipes/${recipe.id}`, {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
@@ -95,7 +95,7 @@ export const updateRecipe = (recipe) =>{
 
 
 export const deleteRecipe = (recipe) =>{
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/recipes/${recipe.id}`, {
+  return fetch(`http://localhost:3000/recipes/${recipe.id}`, {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
@@ -105,7 +105,7 @@ export const deleteRecipe = (recipe) =>{
 }
 
 export const addLike = (like) =>{  
-  return fetch("https://nextdoorcooks-api.herokuapp.com/likes", {
+  return fetch("http://localhost:3000/likes", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -117,7 +117,7 @@ export const addLike = (like) =>{
 
 export const removeLike = (like_id) =>{
   
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/likes/${like_id}`, {
+  return fetch(`http://localhost:3000/likes/${like_id}`, {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
@@ -127,7 +127,7 @@ export const removeLike = (like_id) =>{
 }
 
 export const addRating = (rating)=>{
-  return fetch("https://nextdoorcooks-api.herokuapp.com/ratings", {
+  return fetch("http://localhost:3000/ratings", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -139,7 +139,7 @@ export const addRating = (rating)=>{
 
 export const updateRating = (rating)=>{
   
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/ratings/${rating.id}`, {
+  return fetch(`http://localhost:3000/ratings/${rating.id}`, {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
@@ -150,7 +150,7 @@ export const updateRating = (rating)=>{
 }
 
 export const follow = (id)=>{
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/follow/${id}`, {
+  return fetch(`http://localhost:3000/follow/${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -162,7 +162,7 @@ export const follow = (id)=>{
 
 
 export const unfollow = (id)=>{
-  return fetch(`https://nextdoorcooks-api.herokuapp.com/unfollow/${id}`, {
+  return fetch(`http://localhost:3000/unfollow/${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
