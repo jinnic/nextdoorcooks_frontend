@@ -1,13 +1,13 @@
-# Nextdoor Cooks #
-by [Hyojin](https://github.com/jinnic)
+# Nextdoor Cooks 
+
+Food recipe social media app that provides a platform to share diverse cultural heritage, create social connection and understanding through food. 
+<br/>
+
 
 <kbd>
   <img src="public/NextDoorCooks.png">  
 </kbd>
 
-### About ###
-
-Food recipe social media app that provides a platform to share diverse cultural heritage, create social connection and understanding through food. 
 
 Nextdoor Cooks allows a user to:
 * Sign up and create an account.
